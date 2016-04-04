@@ -19,5 +19,5 @@ include_directories(${PCL_INCLUDE_DIRS})
 link_directories(${PCL_LIBRARY_DIRS})
 add_definitions(${PCL_DEFINITIONS})
 
-add_executable(cylinder_visualizer main.cpp)
+add_executable(cylinder_visualizer main.cpp State.cpp State.h)
 target_link_libraries(cylinder_visualizer ${PCL_LIBRARIES} ${Boost_LIBRARIES})

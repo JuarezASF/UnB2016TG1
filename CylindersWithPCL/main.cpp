@@ -8,17 +8,16 @@
 
 #include <boost/thread/thread.hpp>
 #include <pcl/common/common_headers.h>
-#include <pcl/features/normal_3d.h>
-#include <pcl/io/pcd_io.h>
 #include <pcl/visualization/pcl_visualizer.h>
 #include <pcl/console/parse.h>
 #include <Eigen/Dense>
 
+#include "State.h"
+
 // --------------
 // -----Help-----
 // --------------
-void
-printUsage(const char *progName) {
+void printUsage(const char *progName) {
     std::cout << "\n\nUsage: " << progName << " [options]\n\n"
     << "Options:\n"
     << "-------------------------------------------\n"
@@ -26,7 +25,8 @@ printUsage(const char *progName) {
     << "\n\n";
 }
 
-boost::shared_ptr<pcl::visualization::PCLVisualizer> shapesVis(std::vector<pcl::ModelCoefficients *> cylinders, std::vector<Eigen::Vector3f> centers) {
+boost::shared_ptr<pcl::visualization::PCLVisualizer> shapesVis(std::vector<pcl::ModelCoefficients *> cylinders,
+                                                               std::vector<Eigen::Vector3f> centers) {
     // --------------------------------------------
     // -----Open 3D viewer and add point cloud-----
     // --------------------------------------------
@@ -39,14 +39,14 @@ boost::shared_ptr<pcl::visualization::PCLVisualizer> shapesVis(std::vector<pcl::
     //-----Add shapes at other locations-----
     //---------------------------------------
     int i = 0;
-    for(auto it = cylinders.begin(); it != cylinders.end(); it++){
+    for (auto it = cylinders.begin(); it != cylinders.end(); it++) {
         std::string name = std::to_string(i++);
         viewer->addCylinder(**it, name);
     }
 
     i = 0;
     for (auto c : centers)
-        viewer->addSphere (pcl::PointXYZ(c.x(), c.y(), c.z()), 0.2, 0.5, 0.5, 0.0, "sphere" + std::to_string(i++));
+        viewer->addSphere(pcl::PointXYZ(c.x(), c.y(), c.z()), 0.2, 0.5, 0.5, 0.0, "sphere" + std::to_string(i++));
     return (viewer);
 }
 
@@ -75,12 +75,12 @@ int main(int argc, char **argv) {
     float theta = 0;
 
     std::vector<Eigen::Vector3f> centers;
-    for(int i = 0; i < N; i++)
-        centers.emplace_back(r*cos(i*2*M_PI/N) - r, r*sin(i*2*M_PI/N), i*dz);
+    for (int i = 0; i < N; i++)
+        centers.emplace_back(r * cos(i * 2 * M_PI / N) - r, r * sin(i * 2 * M_PI / N), i * dz);
 
     int i = 0;
-    for(auto center : centers){
-        if(i == centers.size() - 1)
+    for (auto center : centers) {
+        if (i == centers.size() - 1)
             break;
         pcl::ModelCoefficients *coeffs = new pcl::ModelCoefficients();
         coeffs->values.resize(7);    // We need 7 values
@@ -90,7 +90,7 @@ int main(int argc, char **argv) {
         coeffs->values[1] = center.y();
         coeffs->values[2] = center.z();
 
-        auto axis_direction = centers[(i+1)%centers.size()] - center;
+        auto axis_direction = centers[(i + 1) % centers.size()] - center;
 
         coeffs->values[3] = axis_direction.x();
         coeffs->values[4] = axis_direction.y();
