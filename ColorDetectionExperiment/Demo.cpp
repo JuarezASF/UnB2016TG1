@@ -38,8 +38,8 @@ void Demo::run() {
 void Demo::setCamera(std::string file) {
     char idx = Camera::getNextCameraId();
 
-    if (videoInputArray.find(index) == videoInputArray.end())
-        videoInputArray.emplace(std::make_pair(idx, new Camera()));
+    if (videoInputArray.find(idx) == videoInputArray.end())
+        videoInputArray[idx] = boost::shared_ptr<Camera>(new Camera());
 
     videoInputArray[idx]->setCamera(file);
 
@@ -61,9 +61,12 @@ Demo::Demo(std::string filename) : quitRequested(false){
     tracker.addHSVRangeToTrack(Eigen::Vector3f(95, 90, 0), Eigen::Vector3f(130, 255, 141), "left elbow");
     tracker.addHSVRangeToTrack(Eigen::Vector3f(41, 56, 34), Eigen::Vector3f(103, 255, 200), "left shoulder");
 
-    tracker.addHSVRangeToTrack(Eigen::Vector3f(103, 26, 40), Eigen::Vector3f(145, 206, 255), "right hand");
-    tracker.addHSVRangeToTrack(Eigen::Vector3f(0, 80, 46), Eigen::Vector3f(37, 255, 155), "right elbow");
-    tracker.addHSVRangeToTrack(Eigen::Vector3f(0, 0, 0), Eigen::Vector3f(38, 255, 255), "right shoulder");
+
+    if(false) {
+        tracker.addHSVRangeToTrack(Eigen::Vector3f(103, 26, 40), Eigen::Vector3f(145, 206, 255), "right hand");
+        tracker.addHSVRangeToTrack(Eigen::Vector3f(0, 80, 46), Eigen::Vector3f(37, 255, 155), "right elbow");
+        tracker.addHSVRangeToTrack(Eigen::Vector3f(0, 0, 0), Eigen::Vector3f(38, 255, 255), "right shoulder");
+    }
 
 
 }
@@ -76,7 +79,7 @@ void Demo::updateCameraStates() {
 void Demo::setCamera(unsigned int index, unsigned int camera_index) {
 
     if (videoInputArray.find(index) == videoInputArray.end())
-        videoInputArray.emplace(std::make_pair(index, new Camera()));
+        videoInputArray[index] = boost::shared_ptr<Camera>(new Camera());
 
     videoInputArray[index]->setCamera(camera_index);
 

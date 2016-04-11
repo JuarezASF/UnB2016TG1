@@ -30,3 +30,11 @@ char Camera::previousCameraId = 0;
 char Camera::getNextCameraId() {
     return ++previousCameraId;
 }
+
+Camera::Camera() {
+
+}
+
+Camera::~Camera() {
+
+}

@@ -3,6 +3,7 @@
 //
 
 #include <opencv2/opencv.hpp>
+#include <boost/smart_ptr/shared_ptr.hpp>
 
 #ifndef TG1_ARM_DETECTION_COLOR_ARM_H
 #define TG1_ARM_DETECTION_COLOR_ARM_H
@@ -26,6 +27,8 @@ class HSVRangeTrackableObject {
     int iHighV;
 
     vector<double> projectedTrajectories;
+
+    vector<Point> contourn;
 
     String name;
 
@@ -70,6 +73,10 @@ public:
     void calculateRealX(int, int);
 
     void calculateRealZ(int, int);
+
+    void setContourn(vector<Point> &c);
+
+    vector<Point> & getContourn();
 
 };
 

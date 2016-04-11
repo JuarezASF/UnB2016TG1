@@ -13,6 +13,7 @@ protected:
     std::string name;
 
 public:
+    OutputWindow();
     OutputWindow(std::string name);
 
     void display(const cv::Mat & img) const;

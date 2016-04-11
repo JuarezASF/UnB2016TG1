@@ -132,3 +132,13 @@ char HSVRangeTrackableObject::previous_id = 0;
 char HSVRangeTrackableObject::getNextAvailableId() {
     return ++previous_id;
 }
+
+void HSVRangeTrackableObject::setContourn(vector<Point> &c){
+    contourn.clear();
+    for (auto cc : c)
+        contourn.push_back(cc);
+}
+
+vector<Point> &HSVRangeTrackableObject::getContourn() {
+    return contourn;
+}

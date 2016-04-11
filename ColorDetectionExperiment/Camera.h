@@ -14,12 +14,16 @@ protected:
 
     static char previousCameraId;
 
-    cv::VideoCapture cap;
     int cameraAngle;
     int cameraNumber;
 
 public:
 
+    Camera();
+
+    virtual ~Camera();
+
+    cv::VideoCapture cap;
 
     void setCamera(int);
 

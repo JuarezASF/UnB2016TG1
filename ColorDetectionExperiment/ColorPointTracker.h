@@ -22,13 +22,15 @@ protected:
 public:
     ColorPointTracker();
 
+    virtual ~ColorPointTracker();
+
     std::vector<Eigen::Vector3f> getCenters() const;
 
     void update(std::unordered_map<char, cv::Mat> &imgs);
 
     void addHSVRangeToTrack(const Eigen::Vector3f &low_hsv, const Eigen::Vector3f &high_hsv, std::string obj_name = "");
 
-    void detect(boost::shared_ptr<HSVRangeTrackableObject> objToTrack, Mat imgOriginal, Mat imgDetection);
+    void detect(boost::shared_ptr<HSVRangeTrackableObject> objToTrack, const Mat &img);
 
 };
 
