@@ -17,10 +17,9 @@ protected:
     std::unordered_map<std::string, boost::shared_ptr<pcl::ModelCoefficients>> cylinders;
     std::unordered_map<std::string, Eigen::Vector3f> centers;
 
-    int qtd_of_points;
-    float cylinder_radius, tube_radius, dz, current_time, frequency;
+    float cylinder_radius, current_time;
 
-    void construct(int N, float cr, float tr, float dz, float f);
+    void construct(float cr);
 
     void fitCylindersToCenters();
 
@@ -33,7 +32,7 @@ protected:
 
 public:
     State();
-    State(int qtd_of_points, float cylinder_radius, float rube_radius, float dz, float frequency);
+    State(float cylinder_radius);
 
     virtual ~State();
 

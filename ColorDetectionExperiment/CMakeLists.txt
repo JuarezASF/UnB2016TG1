@@ -12,6 +12,6 @@ find_package(OpenCV REQUIRED)
 FIND_PACKAGE(Boost REQUIRED)
 INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIR})
 
-set(SOURCE_FILES main.cpp HSVRangeTrackableObject.cpp HSVRangeTrackableObject.h Camera.cpp Camera.h CommandLineParser.cpp CommandLineParser.h Logger.h Logger.cpp PointTracker.cpp PointTracker.h ColorPointTracker.cpp ColorPointTracker.h OutputWindow.cpp OutputWindow.h Demo.cpp Demo.h)
+set(SOURCE_FILES main.cpp HSVRangeTrackableObject.cpp HSVRangeTrackableObject.h Camera.cpp Camera.h CommandLineParser.cpp CommandLineParser.h Logger.h Logger.cpp PointTracker.cpp PointTracker.h ColorPointTracker.cpp ColorPointTracker.h OutputWindow.cpp OutputWindow.h DemoColorDetect.cpp DemoColorDetect.h)
 add_executable(TG1_arm_detection_color ${SOURCE_FILES})
 target_link_libraries(TG1_arm_detection_color ${OpenCV_LIBS})

@@ -3,34 +3,21 @@
 //
 
 #include "State.h"
+#include "Demo.h"
 
-void State::construct(int N, float cr, float tr, float dz, float f) {
-    current_time = 0;
-    this->frequency = f;
-    qtd_of_points = N;
+void State::construct(float cr) {
     cylinder_radius = cr;
-    tube_radius = tr;
-    this->dz = dz;
 
-    float theta = 0;
-
-    for (int i = 0; i < N; i++) {
-        std::string name = nameOfCenter(i);
-        centers.insert(std::make_pair(name, Eigen::Vector3f(tube_radius * cos(i * 2 * M_PI / N) - tube_radius,
-                                                            tube_radius * sin(i * 2 * M_PI / N), i * dz)));
-    }
-
-    fitCylindersToCenters();
 
 }
 
 State::State() {
-    construct(16, 1, 1, 1, 1);
+    construct(1);
 
 }
 
-State::State(int i, float d, float d1, float d2, float frequency) {
-    construct(i, d, d1, d2, frequency);
+State::State(float d) {
+    construct(d);
 
 }
 
@@ -41,10 +28,12 @@ State::~State() {
 
 void State::update(float dt) {
     current_time += dt;
-    for (int i = 0; i < qtd_of_points; i++) {
-        std::string name = nameOfCenter(i);
-        centers[name](0) = tube_radius * (cos(i * 2 * M_PI / qtd_of_points + current_time * 2 * M_PI * frequency) - 1.0);
-        centers[name](1) = tube_radius * sin(i * 2 * M_PI / qtd_of_points + current_time * 2 * M_PI * frequency);
+    auto points = Demo::getPointsToConnect();
+    int c = 0;
+    for (auto pt : points) {
+        std::string name = nameOfCenter(c++);
+        centers[name](0) = pt.x();
+        centers[name](1) = pt.y();
         //TODO update z
     }
 

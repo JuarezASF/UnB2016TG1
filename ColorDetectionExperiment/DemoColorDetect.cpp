@@ -2,7 +2,7 @@
 // Created by jasf on 4/7/16.
 //
 
-#include "Demo.h"
+#include "DemoColorDetect.h"
 #include "ColorPointTracker.h"
 #include "Logger.h"
 

@@ -4,7 +4,7 @@
 
 #include "ColorPointTracker.h"
 #include "Logger.h"
-#include "DemoColorDetect.h"
+#include "Demo.h"
 
 ColorPointTracker::ColorPointTracker() {
 
@@ -90,10 +90,18 @@ void ColorPointTracker::detect(boost::shared_ptr<HSVRangeTrackableObject> objToT
 
 }
 
-std::vector<Eigen::Vector3f> ColorPointTracker::getCenters() const {
-}
 
 ColorPointTracker::~ColorPointTracker() {
     targets.clear();
 
+}
+
+std::vector<Eigen::Vector3f> ColorPointTracker::getCenters() const {
+    std::vector<Eigen::Vector3f> out;
+
+    for (auto obj = targets.begin(); obj != targets.end(); obj++) {
+        out.emplace_back(obj->second->getXCenter(), obj->second->getYCenter(), obj->second->getZCenter());
+    }
+
+    return out;
 }
