@@ -11,74 +11,77 @@
 #include <map>
 #include <set>
 
-namespace util{
+namespace util {
 
 
-class CommandLineEntry{
-public:
-    std::string name, type;
-    bool required;
-    int iVal;
-    std::string strVal;
-    double dVal;
-    bool bVal;
+    class CommandLineEntry {
+    public:
+        std::string name, type;
+        bool required;
+        int iVal;
+        std::string strVal;
+        double dVal;
+        bool bVal;
 
-    bool iSet, dSet, strSet, bSet;
+        bool iSet, dSet, strSet, bSet;
 
-    CommandLineEntry();
-    CommandLineEntry(std::string name, std::string type, bool required = false);
-    CommandLineEntry(std::string name, std::string type, bool required = false, int defVal = 0);
-    CommandLineEntry(std::string name, std::string type, bool required = false, double defVal = 0.0);
-    CommandLineEntry(std::string name, std::string type, bool required = false, std::string devVal = "");
-    CommandLineEntry(std::string name, std::string type, bool required = false, bool defVal = false);
+        CommandLineEntry();
 
-private:
-    void init();
+        CommandLineEntry(std::string name, std::string type, bool required = false);
 
+        CommandLineEntry(std::string name, std::string type, bool required = false, int defVal = 0);
 
-};
+        CommandLineEntry(std::string name, std::string type, bool required = false, double defVal = 0.0);
 
-class CommandLineParser {
+        CommandLineEntry(std::string name, std::string type, bool required = false, std::string devVal = "");
 
-protected:
-    std::map<std::string, std::string> argTypeMap;
-    std::map<std::string, CommandLineEntry> argValMap;
+        CommandLineEntry(std::string name, std::string type, bool required = false, bool defVal = false);
 
-    static std::set<std::string> validTypes;
-
-public:
-
-    CommandLineParser();
+    private:
+        void init();
 
 
-    void addIntArg(std::string name,  bool required, int defaultValue);
+    };
 
-    void addDoubleArg(std::string name, bool required, double defaultValue);
+    class CommandLineParser {
 
-    void addStrArg(std::string name,  bool required, std::string defaultValue);
+    protected:
+        std::map<std::string, std::string> argTypeMap;
+        std::map<std::string, CommandLineEntry> argValMap;
 
-    void addBoolArg(std::string name,  bool required, bool defaultValue);
+        static std::set<std::string> validTypes;
 
-    void parseCommandLine(int argc, char **argv);
+    public:
 
-    void parseCommandLine(std::vector<std::string> argv);
-
-    void help();
-
-    bool wasDefined(std::string name);
-
-    int getIntVal(std::string argName);
-    double getDoubleVal(std::string argName);
-    std::string getStrVal(std::string argName);
-    double getBoolVal(std::string argName);
+        CommandLineParser();
 
 
+        void addIntArg(std::string name, bool required, int defaultValue);
+
+        void addDoubleArg(std::string name, bool required, double defaultValue);
+
+        void addStrArg(std::string name, bool required, std::string defaultValue);
+
+        void addBoolArg(std::string name, bool required, bool defaultValue);
+
+        void parseCommandLine(int argc, char **argv);
+
+        void parseCommandLine(std::vector<std::string> argv);
+
+        void help();
+
+        bool wasDefined(std::string name);
+
+        int getIntVal(std::string argName);
+
+        double getDoubleVal(std::string argName);
+
+        std::string getStrVal(std::string argName);
+
+        double getBoolVal(std::string argName);
 
 
-
-
-
-};
+    };
 
 }
 

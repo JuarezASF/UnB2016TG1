@@ -21,6 +21,6 @@ link_directories(${PCL_LIBRARY_DIRS})
 add_definitions(${PCL_DEFINITIONS})
 
 
-set(SOURCE_FILES HSVRangeTrackableObject.cpp HSVRangeTrackableObject.h Camera.cpp Camera.h CommandLineParser.cpp CommandLineParser.h Logger.h Logger.cpp PointTracker.cpp PointTracker.h ColorPointTracker.cpp ColorPointTracker.h OutputWindow.cpp OutputWindow.h)
-add_executable(cylinder_visualizer main.cpp State.cpp State.h Demo.cpp Demo.h ${SOURCE_FILES})
-target_link_libraries(cylinder_visualizer ${PCL_LIBRARIES} ${Boost_LIBRARIES} ${OpenCV_LIBS})
+set(SOURCE_FILES HSVRangeMultipleViewTrackableObject.cpp HSVRangeMultipleViewTrackableObject.h Camera.cpp Camera.h CommandLineParser.cpp CommandLineParser.h Logger.h Logger.cpp PointTracker.cpp PointTracker.h ColorPointTracker.cpp ColorPointTracker.h OutputWindow.cpp OutputWindow.h)
+add_executable(Live3dAvatar main.cpp State.cpp State.h Demo.cpp Demo.h ${SOURCE_FILES})
+target_link_libraries(Live3dAvatar ${PCL_LIBRARIES} ${Boost_LIBRARIES} ${OpenCV_LIBS})

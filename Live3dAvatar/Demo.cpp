@@ -3,29 +3,24 @@
 //
 
 #include "Demo.h"
-#include "ColorPointTracker.h"
 #include "Logger.h"
 
-ColorPointTracker Demo::tracker;
+ColorPointTracker Demo::tracker(0);
 std::unordered_map<std::string, OutputWindow> Demo::window;
 
-Demo::Demo(std::string filename) : viewer(new pcl::visualization::PCLVisualizer("3D Viewer")), state(), quitRequested(false) {
+Demo::Demo(std::string filename) : viewer(new pcl::visualization::PCLVisualizer("3D Viewer")), state(),
+                                   quitRequested(false), tracker(1) {
     viewer->setBackgroundColor(0, 0, 0);
     viewer->addCoordinateSystem(10.0);
     viewer->initCameraParameters();
 
     setCamera(filename);
 
-    tracker.addHSVRangeToTrack(Eigen::Vector3f(122, 77, 36), Eigen::Vector3f(179, 255, 255), "left hand");
-    tracker.addHSVRangeToTrack(Eigen::Vector3f(95, 90, 0), Eigen::Vector3f(130, 255, 141), "left elbow");
-    tracker.addHSVRangeToTrack(Eigen::Vector3f(41, 56, 34), Eigen::Vector3f(103, 255, 200), "left shoulder");
+    tracker.addHSVRangeToTrack(cv::Scalar(122, 77, 36), cv::Scalar(179, 255, 255), "left hand");
+    tracker.addHSVRangeToTrack(cv::Scalar(95, 90, 0), cv::Scalar(130, 255, 141), "left elbow");
+    tracker.addHSVRangeToTrack(cv::Scalar(41, 56, 34), cv::Scalar(103, 255, 200), "left shoulder");
 
 
-    if (false) {
-        tracker.addHSVRangeToTrack(Eigen::Vector3f(103, 26, 40), Eigen::Vector3f(145, 206, 255), "right hand");
-        tracker.addHSVRangeToTrack(Eigen::Vector3f(0, 80, 46), Eigen::Vector3f(37, 255, 155), "right elbow");
-        tracker.addHSVRangeToTrack(Eigen::Vector3f(0, 0, 0), Eigen::Vector3f(38, 255, 255), "right shoulder");
-    }
 }
 
 Demo::~Demo() {
@@ -50,8 +45,7 @@ void Demo::run() {
 
 
         //check for opencv input
-        if (((char) waitKey(30)) == 27)
-        {
+        if (((char) cv::waitKey(30)) == 27) {
             Logger::log("esc key is pressed by user");
             quitRequested = true;
         }
@@ -102,7 +96,7 @@ void Demo::setCamera(std::string file) {
     }
 
     //set frame for this camera
-    frameCollection.insert(std::make_pair(idx, Mat()));
+    frameCollection.insert(std::make_pair(idx, cv::Mat()));
 
 }
 
@@ -127,6 +121,6 @@ void Demo::setCamera(unsigned int index, unsigned int camera_index) {
 
 }
 
-vector<Eigen::Vector3f> Demo::getPointsToConnect() {
+std::vector<cv::Point3d> Demo::getPointsToConnect() {
     return tracker.getCenters();
 }

@@ -3,7 +3,6 @@
 //
 
 #include "CommandLineParser.h"
-#include <exception>
 
 namespace util {
     CommandLineParser::CommandLineParser() {

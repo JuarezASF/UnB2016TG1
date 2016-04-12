@@ -24,22 +24,26 @@ protected:
     void fitCylindersToCenters();
 
     std::string nameOfCenter(int d);
+
     std::string nameOfCylinder(int d);
 
     bool checkCenterExists(std::string name);
+
     bool checkCylinderExists(std::string name);
 
 
 public:
     State();
+
     State(float cylinder_radius);
 
     virtual ~State();
 
     void update(float dt);
 
-    inline std::unordered_map<std::string, boost::shared_ptr<pcl::ModelCoefficients>> getCylinders(){return cylinders;}
-    inline std::unordered_map<std::string, Eigen::Vector3f> getCenters(){return centers;}
+    inline std::unordered_map<std::string, boost::shared_ptr<pcl::ModelCoefficients>> getCylinders() { return cylinders; }
+
+    inline std::unordered_map<std::string, Eigen::Vector3f> getCenters() { return centers; }
 
 };
 

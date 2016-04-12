@@ -3,10 +3,10 @@
 //
 
 #include "ColorPointTracker.h"
-#include "Logger.h"
 #include "Demo.h"
 
-ColorPointTracker::ColorPointTracker() {
+ColorPointTracker::ColorPointTracker(unsigned int qtdOfCameras) : qtdOfCameras(qtdOfCameras) {
+
 
 }
 
@@ -15,16 +15,16 @@ void ColorPointTracker::update(std::unordered_map<char, cv::Mat> &imgs) {
 
     for (auto img_it = imgs.begin(); img_it != imgs.end(); img_it++) {
         cv::Mat &img = img_it->second;
-        cvtColor(img, img, COLOR_BGR2HSV);
+        cvtColor(img, img, cv::COLOR_BGR2HSV);
 
-        Mat out(img);
+        cv::Mat out(img);
 
         for (auto it = targets.begin(); it != targets.end(); it++) {
-            detect(it->second, img);
+            detect(it->second, img, 0);
             cv::polylines(out, it->second->getContourn(), true, it->second->getHSVHigh(), 4, 8);
         }
 
-        cvtColor(out, out, COLOR_HSV2BGR);
+        cvtColor(out, out, cv::COLOR_HSV2BGR);
 
         Demo::getOutput("detectionWindow#" + std::to_string(img_it->first)).display(out);
     }
@@ -33,38 +33,38 @@ void ColorPointTracker::update(std::unordered_map<char, cv::Mat> &imgs) {
 }
 
 
-void ColorPointTracker::addHSVRangeToTrack(const Eigen::Vector3f &low_hsv, const Eigen::Vector3f &high_hsv,
+void ColorPointTracker::addHSVRangeToTrack(const cv::Scalar &low_hsv, const cv::Scalar &high_hsv,
                                            std::string obj_name) {
 
-    char idx = HSVRangeTrackableObject::getNextAvailableId();
-    targets[idx] = boost::shared_ptr<HSVRangeTrackableObject>(new HSVRangeTrackableObject(low_hsv.x(), high_hsv.x(),
-                                                                                          low_hsv.y(), high_hsv.y(),
-                                                                                          low_hsv.z(), high_hsv.z()));
+    char idx = HSVRangeMultipleViewTrackableObject::getNextAvailableId();
+    targets[idx] = boost::shared_ptr<HSVRangeMultipleViewTrackableObject>(
+            new HSVRangeMultipleViewTrackableObject(low_hsv, high_hsv, qtdOfCameras));
 
     targets[idx]->setName(obj_name);
 
 }
 
-void ColorPointTracker::detect(boost::shared_ptr<HSVRangeTrackableObject> objToTrack, const Mat &img) {
-    static const Size2i &erose_kernel_size = Size(5, 5);
-    static const Size2i &dilate_kernel_size = Size(10, 10);
+void ColorPointTracker::detect(boost::shared_ptr<HSVRangeMultipleViewTrackableObject> objToTrack, const cv::Mat &img,
+                               unsigned int k) {
+    static const cv::Size2i &erose_kernel_size = cv::Size(5, 5);
+    static const cv::Size2i &dilate_kernel_size = cv::Size(10, 10);
 
-    Mat filteredImg;
+    cv::Mat filteredImg;
 
     inRange(img, objToTrack->getHSVLow(), objToTrack->getHSVHigh(), filteredImg);
 
-    erode(filteredImg, filteredImg, getStructuringElement(MORPH_ELLIPSE, erose_kernel_size));
-    erode(filteredImg, filteredImg, getStructuringElement(MORPH_ELLIPSE, erose_kernel_size));
+    erode(filteredImg, filteredImg, getStructuringElement(cv::MORPH_ELLIPSE, erose_kernel_size));
+    erode(filteredImg, filteredImg, getStructuringElement(cv::MORPH_ELLIPSE, erose_kernel_size));
 
-    dilate(filteredImg, filteredImg, getStructuringElement(MORPH_ELLIPSE, dilate_kernel_size));
-    dilate(filteredImg, filteredImg, getStructuringElement(MORPH_ELLIPSE, dilate_kernel_size));
+    dilate(filteredImg, filteredImg, getStructuringElement(cv::MORPH_ELLIPSE, dilate_kernel_size));
+    dilate(filteredImg, filteredImg, getStructuringElement(cv::MORPH_ELLIPSE, dilate_kernel_size));
 
-    vector<vector<Point> > contours;
-    vector<Vec4i> hierarchy;
-    Moments moment;
+    std::vector<std::vector<cv::Point2d> > contours;
+    std::vector<cv::Vec4i> hierarchy;
+    cv::Moments moment;
     int firstAngle = 0;
 
-    findContours(filteredImg, contours, hierarchy, CV_RETR_TREE, CV_CHAIN_APPROX_SIMPLE, Point(0, 0));
+    findContours(filteredImg, contours, hierarchy, CV_RETR_TREE, CV_CHAIN_APPROX_SIMPLE, cv::Point(0, 0));
 
     if (contours.size() > 0) {
         double max_seen_area = 0;
@@ -81,10 +81,9 @@ void ColorPointTracker::detect(boost::shared_ptr<HSVRangeTrackableObject> objToT
 
         moment = moments(contours[index]);
 
-        objToTrack->setArea(moment.m00);
-        objToTrack->setXCenter(moment.m10 / moment.m00);
-        objToTrack->setYCenter(moment.m01 / moment.m00);
-        objToTrack->setContourn(contours[index]);
+        objToTrack->setArea(moment.m00, k);
+        objToTrack->setCenter(cv::Point3d(moment.m10 / moment.m00, moment.m01 / moment.m00, 0), k);
+        objToTrack->setContourn(contours[index], k);
     }
 
 
@@ -96,11 +95,12 @@ ColorPointTracker::~ColorPointTracker() {
 
 }
 
-std::vector<Eigen::Vector3f> ColorPointTracker::getCenters() const {
-    std::vector<Eigen::Vector3f> out;
+std::vector<cv::Point3d> ColorPointTracker::getCenters() const {
+    std::vector<cv::Point3d> out;
 
-    for (auto obj = targets.begin(); obj != targets.end(); obj++) {
-        out.emplace_back(obj->second->getXCenter(), obj->second->getYCenter(), obj->second->getZCenter());
+    std::unordered_map<char, boost::shared_ptr<HSVRangeMultipleViewTrackableObject>>::const_iterator obj;
+    for (obj = targets.begin(); obj != targets.end(); obj++) {
+        out.emplace_back(obj->second->getEstimatedCenter());
     }
 
     return out;

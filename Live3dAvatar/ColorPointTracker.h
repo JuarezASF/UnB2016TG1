@@ -16,20 +16,22 @@
 
 class ColorPointTracker : public PointTracker {
 
-    std::unordered_map<char, boost::shared_ptr<HSVRangeTrackableObject>> targets;
+    std::unordered_map<char, boost::shared_ptr<HSVRangeMultipleViewTrackableObject>> targets;
+
+    unsigned int qtdOfCameras;
 
 public:
-    ColorPointTracker();
+    ColorPointTracker(unsigned int qtdOfCameras);
 
     virtual ~ColorPointTracker();
 
-    std::vector<Eigen::Vector3f> getCenters() const;
+    std::vector<cv::Point3d> getCenters() const;
 
     void update(std::unordered_map<char, cv::Mat> &imgs);
 
-    void addHSVRangeToTrack(const Eigen::Vector3f &low_hsv, const Eigen::Vector3f &high_hsv, std::string obj_name = "");
+    void addHSVRangeToTrack(const cv::Scalar &low_hsv, const cv::Scalar &high_hsv, std::string obj_name = "");
 
-    void detect(boost::shared_ptr<HSVRangeTrackableObject> objToTrack, const Mat &img);
+    void detect(boost::shared_ptr<HSVRangeMultipleViewTrackableObject> objToTrack, const cv::Mat &img, unsigned int k);
 
 };
 

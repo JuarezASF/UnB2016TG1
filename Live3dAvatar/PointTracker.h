@@ -16,11 +16,11 @@ protected:
     bool quitRequested;
 
 public:
-    virtual std::vector<Eigen::Vector3f> getCenters() const = 0;
+    virtual std::vector<cv::Point3d> getCenters() const = 0;
 
     virtual void update(std::unordered_map<char, cv::Mat> &imgs) = 0;
 
-    inline bool getQuitRequested(){return quitRequested;}
+    inline bool getQuitRequested() { return quitRequested; }
 
 
 };

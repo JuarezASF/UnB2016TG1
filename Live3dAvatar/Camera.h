@@ -3,7 +3,7 @@
 //
 
 #include <opencv2/opencv.hpp>
-#include "HSVRangeTrackableObject.h"
+#include "HSVRangeMultipleViewTrackableObject.h"
 
 #ifndef TG1_ARM_DETECTION_COLOR_CAMERA_H
 #define TG1_ARM_DETECTION_COLOR_CAMERA_H
@@ -27,7 +27,7 @@ public:
 
     void setCamera(int);
 
-    void setCamera(String);
+    void setCamera(std::string filename);
 
     void setAngle(int);
 

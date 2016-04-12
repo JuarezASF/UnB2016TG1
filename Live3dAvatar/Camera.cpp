@@ -13,7 +13,7 @@ void Camera::setCamera(int i) {
 
 }
 
-void Camera::setCamera(String file) {
+void Camera::setCamera(std::string file) {
 
     cameraNumber = 0;
     cap.open(file);

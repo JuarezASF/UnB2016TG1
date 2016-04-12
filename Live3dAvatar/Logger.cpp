@@ -22,12 +22,12 @@ void Logger::setPrintToFile(bool b) {
 void Logger::log(std::string msg) {
     time_t now = time(0);
     std::string dt = ctime(&now);
-    dt = dt.substr(0, dt.size() -1 );
+    dt = dt.substr(0, dt.size() - 1);
 
     if (printToScreen) {
         std::cout << "[" << dt << "]" << msg << std::endl;
     }
-    if (printToFile){
+    if (printToFile) {
         //TODO
     }
 

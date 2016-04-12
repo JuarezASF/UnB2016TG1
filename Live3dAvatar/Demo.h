@@ -22,7 +22,9 @@ protected:
     //pcl stuff
     boost::shared_ptr<pcl::visualization::PCLVisualizer> viewer;
     State state;
+
     void cleanVisualizer();
+
     void updateVisualizer();
 
     //opencv stuff
@@ -30,9 +32,12 @@ protected:
     bool quitRequested;
     static std::unordered_map<std::string, OutputWindow> window;
     std::unordered_map<char, boost::shared_ptr<Camera> > videoInputArray;
-    std::unordered_map<char, Mat> frameCollection;
+    std::unordered_map<char, cv::Mat> frameCollection;
+
     void updateCameraStates();
+
     void setCamera(std::string file);
+
     void setCamera(unsigned int index, unsigned int camera_index);
 
 
@@ -46,7 +51,7 @@ public:
 
     static OutputWindow &getOutput(std::string name);
 
-    static vector<Eigen::Vector3f> getPointsToConnect();
+    static std::vector<cv::Point3d> getPointsToConnect();
 
 };
 
