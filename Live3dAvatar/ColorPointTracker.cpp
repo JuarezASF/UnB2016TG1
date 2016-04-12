@@ -13,6 +13,7 @@ ColorPointTracker::ColorPointTracker(unsigned int qtdOfCameras) : qtdOfCameras(q
 
 void ColorPointTracker::update(std::unordered_map<char, cv::Mat> &imgs) {
 
+    unsigned int image_index = 0;
     for (auto img_it = imgs.begin(); img_it != imgs.end(); img_it++) {
         cv::Mat &img = img_it->second;
         cvtColor(img, img, cv::COLOR_BGR2HSV);
@@ -20,8 +21,8 @@ void ColorPointTracker::update(std::unordered_map<char, cv::Mat> &imgs) {
         cv::Mat out(img);
 
         for (auto it = targets.begin(); it != targets.end(); it++) {
-            detect(it->second, img, 0);
-            cv::polylines(out, it->second->getContourn(), true, it->second->getHSVHigh(), 4, 8);
+            detect(it->second, img, image_index);
+            cv::polylines(out, it->second->getContourn(image_index++), true, it->second->getHSVHigh(), 4, 8);
         }
 
         cvtColor(out, out, cv::COLOR_HSV2BGR);
@@ -59,31 +60,33 @@ void ColorPointTracker::detect(boost::shared_ptr<HSVRangeMultipleViewTrackableOb
     dilate(filteredImg, filteredImg, getStructuringElement(cv::MORPH_ELLIPSE, dilate_kernel_size));
     dilate(filteredImg, filteredImg, getStructuringElement(cv::MORPH_ELLIPSE, dilate_kernel_size));
 
-    std::vector<std::vector<cv::Point2d> > contours;
+    std::vector<std::vector<cv::Point> > contornos;
     std::vector<cv::Vec4i> hierarchy;
     cv::Moments moment;
     int firstAngle = 0;
 
-    findContours(filteredImg, contours, hierarchy, CV_RETR_TREE, CV_CHAIN_APPROX_SIMPLE, cv::Point(0, 0));
+    cv::findContours(filteredImg, contornos, hierarchy, CV_RETR_TREE, CV_CHAIN_APPROX_SIMPLE, cv::Point(0, 0));
 
-    if (contours.size() > 0) {
+    if (contornos.size() > 0) {
         double max_seen_area = 0;
-        int index = 0;
+        unsigned int index = 0;
 
         //find contour of max max_seen_area
-        for (int i = 0; i < contours.size(); i++) {
-            moment = moments(contours[i]);
+        for (unsigned int i = 0; i < contornos.size(); i++) {
+            moment = moments(contornos[i]);
             if (moment.m00 > max_seen_area) {
                 max_seen_area = moment.m00;
                 index = i;
             }
         }
 
-        moment = moments(contours[index]);
+        moment = moments(contornos[index]);
 
         objToTrack->setArea(moment.m00, k);
         objToTrack->setCenter(cv::Point3d(moment.m10 / moment.m00, moment.m01 / moment.m00, 0), k);
-        objToTrack->setContourn(contours[index], k);
+
+
+        objToTrack->setContourn(contornos[index], k);
     }
 
 

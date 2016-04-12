@@ -5,11 +5,11 @@
 #include "Demo.h"
 #include "Logger.h"
 
-ColorPointTracker Demo::tracker(0);
+ColorPointTracker Demo::tracker(1);
 std::unordered_map<std::string, OutputWindow> Demo::window;
 
 Demo::Demo(std::string filename) : viewer(new pcl::visualization::PCLVisualizer("3D Viewer")), state(),
-                                   quitRequested(false), tracker(1) {
+                                   quitRequested(false){
     viewer->setBackgroundColor(0, 0, 0);
     viewer->addCoordinateSystem(10.0);
     viewer->initCameraParameters();

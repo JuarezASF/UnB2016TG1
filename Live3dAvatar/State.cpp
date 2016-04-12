@@ -32,8 +32,8 @@ void State::update(float dt) {
     int c = 0;
     for (auto pt : points) {
         std::string name = nameOfCenter(c++);
-        centers[name](0) = pt.x();
-        centers[name](1) = pt.y();
+        centers[name](0) = pt.x;
+        centers[name](1) = pt.y;
         //TODO update z
     }
 
