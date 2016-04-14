@@ -20,7 +20,7 @@ class Demo {
 
 protected:
     //pcl stuff
-    boost::shared_ptr<pcl::visualization::PCLVisualizer> viewer;
+    pcl::visualization::PCLVisualizer *viewer;
     State state;
 
     void cleanVisualizer();
@@ -29,9 +29,10 @@ protected:
 
     //opencv stuff
     static ColorPointTracker tracker;
+    bool using3dVisualizer, usingTrueTracker;
     bool quitRequested;
     static std::unordered_map<std::string, OutputWindow> window;
-    std::unordered_map<char, boost::shared_ptr<Camera> > videoInputArray;
+    std::unordered_map<char, Camera*> videoInputArray;
     std::unordered_map<char, cv::Mat> frameCollection;
 
     void updateCameraStates();
@@ -40,10 +41,17 @@ protected:
 
     void setCamera(unsigned int index, unsigned int camera_index);
 
+    Demo(std::string filename, bool use3dVisualizer, bool useTrueTracking);
+
+    static Demo *instance;
 
 public:
 
-    Demo(std::string filename);
+
+    static Demo *getInstance();
+
+    static void init(std::string filename, bool use3dVisualizer, bool useTrueTracking);
+
 
     virtual ~Demo();
 

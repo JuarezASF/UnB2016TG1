@@ -10,15 +10,17 @@
 
 #include <vector>
 #include <unordered_map>
-#include <boost/shared_ptr.hpp>
 
 #include <eigen3/Eigen/Dense>
 
 class ColorPointTracker : public PointTracker {
 
-    std::unordered_map<char, boost::shared_ptr<HSVRangeMultipleViewTrackableObject>> targets;
+    std::unordered_map<char, HSVRangeMultipleViewTrackableObject *> targets;
 
     unsigned int qtdOfCameras;
+
+    std::vector<cv::Vec4i> hierarchy;
+    std::vector<std::vector<cv::Point> > current_contourns;
 
 public:
     ColorPointTracker(unsigned int qtdOfCameras);
@@ -31,7 +33,7 @@ public:
 
     void addHSVRangeToTrack(const cv::Scalar &low_hsv, const cv::Scalar &high_hsv, std::string obj_name = "");
 
-    void detect(boost::shared_ptr<HSVRangeMultipleViewTrackableObject> objToTrack, const cv::Mat &img, unsigned int k);
+    void detect(HSVRangeMultipleViewTrackableObject *objToTrack, const cv::Mat &img, unsigned int k);
 
 };
 

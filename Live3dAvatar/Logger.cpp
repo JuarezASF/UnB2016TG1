@@ -26,6 +26,7 @@ void Logger::log(std::string msg) {
 
     if (printToScreen) {
         std::cout << "[" << dt << "]" << msg << std::endl;
+        std::cout.flush();
     }
     if (printToFile) {
         //TODO

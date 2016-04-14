@@ -34,7 +34,6 @@ void State::update(float dt) {
         std::string name = nameOfCenter(c++);
         centers[name](0) = pt.x;
         centers[name](1) = pt.y;
-        //TODO update z
     }
 
     fitCylindersToCenters();
@@ -59,11 +58,11 @@ void State::fitCylindersToCenters() {
 
         auto current_cylinder_name = nameOfCylinder(i);
         if (cylinders.find(current_cylinder_name) == cylinders.end()) {
-            cylinders[current_cylinder_name] = boost::shared_ptr<pcl::ModelCoefficients>(new pcl::ModelCoefficients());
+            cylinders[current_cylinder_name] = new pcl::ModelCoefficients();
             cylinders[current_cylinder_name]->values.resize(7);
         }
 
-        boost::shared_ptr<pcl::ModelCoefficients> coefficients = cylinders[current_cylinder_name];
+        pcl::ModelCoefficients* coefficients = cylinders[current_cylinder_name];
 
         auto center = centers[current_center_name];
         auto axis_direction = centers[next_center_name] - center;

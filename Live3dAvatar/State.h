@@ -14,7 +14,7 @@
 
 class State {
 protected:
-    std::unordered_map<std::string, boost::shared_ptr<pcl::ModelCoefficients>> cylinders;
+    std::unordered_map<std::string, pcl::ModelCoefficients*> cylinders;
     std::unordered_map<std::string, Eigen::Vector3f> centers;
 
     float cylinder_radius, current_time;
@@ -41,7 +41,7 @@ public:
 
     void update(float dt);
 
-    inline std::unordered_map<std::string, boost::shared_ptr<pcl::ModelCoefficients>> getCylinders() { return cylinders; }
+    inline std::unordered_map<std::string, pcl::ModelCoefficients*> getCylinders() { return cylinders; }
 
     inline std::unordered_map<std::string, Eigen::Vector3f> getCenters() { return centers; }
 

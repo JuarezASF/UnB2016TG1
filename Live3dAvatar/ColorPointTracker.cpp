@@ -18,16 +18,23 @@ void ColorPointTracker::update(std::unordered_map<char, cv::Mat> &imgs) {
         cv::Mat &img = img_it->second;
         cvtColor(img, img, cv::COLOR_BGR2HSV);
 
-        cv::Mat out(img);
+        cv::Mat out = img.clone();
 
-        for (auto it = targets.begin(); it != targets.end(); it++) {
-            detect(it->second, img, image_index);
-            cv::polylines(out, it->second->getContourn(image_index++), true, it->second->getHSVHigh(), 4, 8);
+        unsigned int target_idx = 0;
+        for (std::unordered_map<char, HSVRangeMultipleViewTrackableObject *>::iterator it = targets.begin();
+             it != targets.end(); it++) {
+            HSVRangeMultipleViewTrackableObject *current_target(it->second);
+            if (!current_target)
+                continue;
+            detect(current_target, img, target_idx);
+//            cv::polylines(out, current_target->getContourn(image_index++), true, current_target->getHSVHigh(), 4, 8);
+            cv::drawContours(out, current_target->getContourns(), target_idx++, current_target->getHSVHigh(), 4, 8);
         }
 
         cvtColor(out, out, cv::COLOR_HSV2BGR);
 
         Demo::getOutput("detectionWindow#" + std::to_string(img_it->first)).display(out);
+        image_index++;
     }
 
 
@@ -38,19 +45,18 @@ void ColorPointTracker::addHSVRangeToTrack(const cv::Scalar &low_hsv, const cv::
                                            std::string obj_name) {
 
     char idx = HSVRangeMultipleViewTrackableObject::getNextAvailableId();
-    targets[idx] = boost::shared_ptr<HSVRangeMultipleViewTrackableObject>(
-            new HSVRangeMultipleViewTrackableObject(low_hsv, high_hsv, qtdOfCameras));
+    targets.insert(std::make_pair(idx, new HSVRangeMultipleViewTrackableObject(low_hsv, high_hsv, qtdOfCameras)));
 
     targets[idx]->setName(obj_name);
 
 }
 
-void ColorPointTracker::detect(boost::shared_ptr<HSVRangeMultipleViewTrackableObject> objToTrack, const cv::Mat &img,
+void ColorPointTracker::detect(HSVRangeMultipleViewTrackableObject *objToTrack, const cv::Mat &img,
                                unsigned int k) {
     static const cv::Size2i &erose_kernel_size = cv::Size(5, 5);
     static const cv::Size2i &dilate_kernel_size = cv::Size(10, 10);
 
-    cv::Mat filteredImg;
+    cv::Mat filteredImg = img.clone();
 
     inRange(img, objToTrack->getHSVLow(), objToTrack->getHSVHigh(), filteredImg);
 
@@ -60,33 +66,34 @@ void ColorPointTracker::detect(boost::shared_ptr<HSVRangeMultipleViewTrackableOb
     dilate(filteredImg, filteredImg, getStructuringElement(cv::MORPH_ELLIPSE, dilate_kernel_size));
     dilate(filteredImg, filteredImg, getStructuringElement(cv::MORPH_ELLIPSE, dilate_kernel_size));
 
-    std::vector<std::vector<cv::Point> > contornos;
-    std::vector<cv::Vec4i> hierarchy;
+
+    current_contourns.clear();
+    hierarchy.clear();
+
     cv::Moments moment;
     int firstAngle = 0;
 
-    cv::findContours(filteredImg, contornos, hierarchy, CV_RETR_TREE, CV_CHAIN_APPROX_SIMPLE, cv::Point(0, 0));
+    cv::findContours(filteredImg, current_contourns, hierarchy, CV_RETR_TREE, CV_CHAIN_APPROX_SIMPLE, cv::Point(0, 0));
 
-    if (contornos.size() > 0) {
+    if (current_contourns.size() > 0) {
         double max_seen_area = 0;
         unsigned int index = 0;
 
         //find contour of max max_seen_area
-        for (unsigned int i = 0; i < contornos.size(); i++) {
-            moment = moments(contornos[i]);
+        for (unsigned int i = 0; i < current_contourns.size(); i++) {
+            moment = moments(current_contourns[i]);
             if (moment.m00 > max_seen_area) {
                 max_seen_area = moment.m00;
                 index = i;
             }
         }
 
-        moment = moments(contornos[index]);
+        moment = moments(current_contourns[index]);
 
         objToTrack->setArea(moment.m00, k);
         objToTrack->setCenter(cv::Point3d(moment.m10 / moment.m00, moment.m01 / moment.m00, 0), k);
-
-
-        objToTrack->setContourn(contornos[index], k);
+        std::vector<cv::Point> &o = current_contourns[index];
+        objToTrack->setContourn(o, k);
     }
 
 
@@ -101,7 +108,7 @@ ColorPointTracker::~ColorPointTracker() {
 std::vector<cv::Point3d> ColorPointTracker::getCenters() const {
     std::vector<cv::Point3d> out;
 
-    std::unordered_map<char, boost::shared_ptr<HSVRangeMultipleViewTrackableObject>>::const_iterator obj;
+    std::unordered_map<char, HSVRangeMultipleViewTrackableObject*>::const_iterator obj;
     for (obj = targets.begin(); obj != targets.end(); obj++) {
         out.emplace_back(obj->second->getEstimatedCenter());
     }
