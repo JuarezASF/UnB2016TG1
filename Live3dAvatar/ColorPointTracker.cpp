@@ -16,19 +16,15 @@ void ColorPointTracker::update(std::unordered_map<char, cv::Mat> &imgs) {
     unsigned int image_index = 0;
     for (auto img_it = imgs.begin(); img_it != imgs.end(); img_it++) {
         cv::Mat &img = img_it->second;
-        cvtColor(img, img, cv::COLOR_BGR2HSV);
+        cv::cvtColor(img, img, cv::COLOR_BGR2HSV);
 
-        cv::Mat out = img.clone();
+        cv::Mat out(img);
 
         unsigned int target_idx = 0;
         for (std::unordered_map<char, HSVRangeMultipleViewTrackableObject *>::iterator it = targets.begin();
              it != targets.end(); it++) {
-            HSVRangeMultipleViewTrackableObject *current_target(it->second);
-            if (!current_target)
-                continue;
-            detect(current_target, img, target_idx);
-//            cv::polylines(out, current_target->getContourn(image_index++), true, current_target->getHSVHigh(), 4, 8);
-            cv::drawContours(out, current_target->getContourns(), target_idx++, current_target->getHSVHigh(), 4, 8);
+            detect(it->second, img, target_idx);
+            cv::polylines(out, it->second->getContourn(image_index++), true, it->second->getHSVHigh(), 4, 8);
         }
 
         cvtColor(out, out, cv::COLOR_HSV2BGR);
@@ -56,7 +52,7 @@ void ColorPointTracker::detect(HSVRangeMultipleViewTrackableObject *objToTrack, 
     static const cv::Size2i &erose_kernel_size = cv::Size(5, 5);
     static const cv::Size2i &dilate_kernel_size = cv::Size(10, 10);
 
-    cv::Mat filteredImg = img.clone();
+    cv::Mat filteredImg;
 
     inRange(img, objToTrack->getHSVLow(), objToTrack->getHSVHigh(), filteredImg);
 

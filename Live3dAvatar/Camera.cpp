@@ -4,7 +4,6 @@
 
 #include "Camera.h"
 
-using namespace std;
 
 void Camera::setCamera(int i) {
 
