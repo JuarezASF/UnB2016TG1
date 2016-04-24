@@ -3,7 +3,7 @@
 //
 
 #include <opencv2/opencv.hpp>
-#include "HSVRangeMultipleViewTrackableObject.h"
+#include "RangeMultipleViewTracker.h"
 
 #ifndef TG1_ARM_DETECTION_COLOR_CAMERA_H
 #define TG1_ARM_DETECTION_COLOR_CAMERA_H
@@ -17,22 +17,15 @@ protected:
     int cameraAngle;
     int cameraNumber;
 
+    static char getNextCameraId();
+
 public:
 
-    Camera();
+    Camera(std::string filename);
 
     virtual ~Camera();
 
     cv::VideoCapture cap;
-
-    void setCamera(int);
-
-    void setCamera(std::string filename);
-
-    void setAngle(int);
-
-    static char getNextCameraId();
-
 
 };
 

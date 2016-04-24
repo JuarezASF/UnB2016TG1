@@ -32,14 +32,12 @@ protected:
     bool using3dVisualizer, usingTrueTracker;
     bool quitRequested;
     static std::unordered_map<std::string, OutputWindow> window;
-    std::unordered_map<char, Camera*> videoInputArray;
-    std::unordered_map<char, cv::Mat> frameCollection;
+    std::vector<Camera*> videoInputArray;
+    std::vector<cv::Mat> frameCollection;
 
     void updateCameraStates();
 
     void setCamera(std::string file);
-
-    void setCamera(unsigned int index, unsigned int camera_index);
 
     Demo(std::string filename, bool use3dVisualizer, bool useTrueTracking);
 
@@ -52,7 +50,6 @@ public:
 
     static void init(std::string filename, bool use3dVisualizer, bool useTrueTracking);
 
-
     virtual ~Demo();
 
     void run();
@@ -61,6 +58,7 @@ public:
 
     static std::vector<cv::Point3d> getPointsToConnect();
 
+    bool displayImgProcessing;
 };
 
 

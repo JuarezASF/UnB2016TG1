@@ -30,10 +30,11 @@ void State::update(float dt) {
     current_time += dt;
     auto points = Demo::getPointsToConnect();
     int c = 0;
+    std::string c_name;
     for (auto pt : points) {
-        std::string name = nameOfCenter(c++);
-        centers[name](0) = pt.x;
-        centers[name](1) = pt.y;
+        c_name = nameOfCenter(c++);
+        centers[c_name](0) = pt.x;
+        centers[c_name](1) = pt.y;
     }
 
     fitCylindersToCenters();

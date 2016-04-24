@@ -10,15 +10,23 @@
 #include <opencv2/core/mat.hpp>
 #include <unordered_map>
 
-class PointTracker {
+class MultipleViewPointTracker {
 
 protected:
     bool quitRequested;
+    std::vector<cv::Point3d> measuredCenters;
+    cv::Point3d estimatedCenter;
 
 public:
-    virtual std::vector<cv::Point3d> getCenters() const = 0;
 
-    virtual void update(std::unordered_map<char, cv::Mat> &imgs) = 0;
+    //update objects detection based on each received image
+    virtual void update(const std::vector<cv::Mat> &imgs) = 0;
+
+    //return center of object on each view
+    virtual std::vector<cv::Point3d> getCenters() const = 0;
+    virtual cv::Point3d getEstimatedCenter() const = 0;
+
+
 
     inline bool getQuitRequested() { return quitRequested; }
 
