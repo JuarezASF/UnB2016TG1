@@ -28,13 +28,12 @@ State::~State() {
 
 void State::update(float dt) {
     current_time += dt;
-    auto points = Demo::getPointsToConnect();
+    std::vector<cv::Point3d> points = Demo::getPointsToConnect();
     int c = 0;
     std::string c_name;
-    for (auto pt : points) {
+    for (int k = 0 ; k < points.size(); k++) {
         c_name = nameOfCenter(c++);
-        centers[c_name](0) = pt.x;
-        centers[c_name](1) = pt.y;
+        centers[c_name] = points[k];
     }
 
     fitCylindersToCenters();
@@ -52,9 +51,9 @@ void State::fitCylindersToCenters() {
             break;
 
         if (!checkCenterExists(current_center_name))
-            throw std::runtime_error("Cannor find point " + current_center_name);
+            throw std::runtime_error("Cannot find point " + current_center_name);
         if (!checkCenterExists(next_center_name))
-            throw std::runtime_error("Cannor find point " + next_center_name);
+            throw std::runtime_error("Cannot find point " + next_center_name);
 
 
         auto current_cylinder_name = nameOfCylinder(i);
@@ -70,13 +69,13 @@ void State::fitCylindersToCenters() {
 
         coefficients->values.clear();
 
-        coefficients->values.push_back(center.x());
-        coefficients->values.push_back(center.y());
-        coefficients->values.push_back(center.z());
+        coefficients->values.push_back(center.x);
+        coefficients->values.push_back(center.y);
+        coefficients->values.push_back(center.z);
 
-        coefficients->values.push_back(axis_direction.x());
-        coefficients->values.push_back(axis_direction.y());
-        coefficients->values.push_back(axis_direction.z());
+        coefficients->values.push_back(axis_direction.x);
+        coefficients->values.push_back(axis_direction.y);
+        coefficients->values.push_back(axis_direction.z);
         coefficients->values.push_back(cylinder_radius);
 
     }

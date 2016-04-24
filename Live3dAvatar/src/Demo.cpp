@@ -87,10 +87,10 @@ void Demo::updateVisualizer() {
         viewer->addCylinder(*(it->second), it->first);
     }
 
-    std::unordered_map<std::string, Eigen::Vector3f> centers = state.getCenters();
+    std::unordered_map<std::string, cv::Point3d> centers = state.getCenters();
     for (auto it = centers.begin(); it != centers.end(); it++) {
         auto c = it->second;
-        viewer->addSphere(pcl::PointXYZ(c(0), c(1), c(2)), 10, 0.5, 0.5, 0.0, it->first);
+        viewer->addSphere(pcl::PointXYZ(c.x, c.y, c.z), 10, 0.5, 0.5, 0.0, it->first);
     }
 
 }

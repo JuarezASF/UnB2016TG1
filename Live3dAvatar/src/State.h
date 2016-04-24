@@ -5,8 +5,9 @@
 #ifndef STEP00_STATE_H
 #define STEP00_STATE_H
 
-#include <Eigen/Dense>
 #include <pcl/visualization/pcl_visualizer.h>
+
+#include <opencv2/core.hpp>
 
 #include <unordered_map>
 #include <string>
@@ -15,7 +16,7 @@
 class State {
 protected:
     std::unordered_map<std::string, pcl::ModelCoefficients*> cylinders;
-    std::unordered_map<std::string, Eigen::Vector3f> centers;
+    std::unordered_map<std::string, cv::Point3d> centers;
 
     float cylinder_radius, current_time;
 
@@ -43,7 +44,7 @@ public:
 
     inline std::unordered_map<std::string, pcl::ModelCoefficients*> getCylinders() { return cylinders; }
 
-    inline std::unordered_map<std::string, Eigen::Vector3f> getCenters() { return centers; }
+    inline std::unordered_map<std::string, cv::Point3d> getCenters() { return centers; }
 
 };
 
