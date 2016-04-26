@@ -7,6 +7,9 @@
 
 #include <opencv2/opencv.hpp>
 #include <vector>
+#include <set>
+#include <unordered_map>
+#include "../test/TrackableObjInfo.h"
 
 class util {
 
@@ -16,6 +19,10 @@ public:
     static std::vector<cv::Vec3b> convert(std::vector<cv::Vec3b> cs, int code);
 
     static std::vector<cv::Vec3b> getSpacedHSVColors(int n, unsigned char s, unsigned char v);
+
+    static std::unordered_map<std::string, TrackableObjInfo> parseConnectionYML(std::string filename);
+
+    static cv::Vec3b readVec3b(cv::FileNode node);
 
 };
 

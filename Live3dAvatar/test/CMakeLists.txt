@@ -9,3 +9,9 @@ target_link_libraries(create_easy_video ${OpenCV_LIBS})
 
 add_executable(color_transform color_transform.cpp)
 target_link_libraries(color_transform ${OpenCV_LIBS})
+
+add_executable(test_write_yml test_write_yml.cpp)
+target_link_libraries(test_write_yml ${OpenCV_LIBS})
+
+add_executable(test_read_yml test_read_yml.cpp)
+target_link_libraries(test_read_yml ${OpenCV_LIBS})

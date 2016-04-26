@@ -10,8 +10,10 @@
 #include <opencv2/core.hpp>
 
 #include <unordered_map>
+#include <set>
 #include <string>
 #include <exception>
+#include "../test/TrackableObjInfo.h"
 
 class State {
 protected:
@@ -24,7 +26,6 @@ protected:
 
     void fitCylindersToCenters();
 
-    std::string nameOfCenter(int d);
 
     std::string nameOfCylinder(int d);
 
@@ -36,6 +37,8 @@ protected:
 public:
     State();
 
+    std::string nameOfCenter(int d);
+
     State(float cylinder_radius);
 
     virtual ~State();
@@ -45,6 +48,11 @@ public:
     inline std::unordered_map<std::string, pcl::ModelCoefficients*> getCylinders() { return cylinders; }
 
     inline std::unordered_map<std::string, cv::Point3d> getCenters() { return centers; }
+
+    void connect(std::string A, std::string B);
+
+    void setPointRange(cv::Vec3b low, cv::Vec3b high, std::string name);
+    std::unordered_map<std::string , TrackableObjInfo> pointHyerarchyMap;
 
 };
 

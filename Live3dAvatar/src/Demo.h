@@ -29,7 +29,6 @@ protected:
 
     //opencv stuff
     static ColorPointTracker tracker;
-    bool using3dVisualizer, usingTrueTracker;
     bool quitRequested;
     static std::unordered_map<std::string, OutputWindow> window;
     std::vector<Camera*> videoInputArray;
@@ -39,7 +38,7 @@ protected:
 
     void setCamera(std::string file);
 
-    Demo(std::string filename, bool use3dVisualizer, bool useTrueTracking);
+    Demo(std::string filename, std::string yml_file);
 
     static Demo *instance;
 
@@ -48,7 +47,7 @@ public:
 
     static Demo *getInstance();
 
-    static void init(std::string filename, bool use3dVisualizer, bool useTrueTracking);
+    static void init(std::string filename, std::string yml_file);
 
     virtual ~Demo();
 
@@ -58,7 +57,6 @@ public:
 
     static std::vector<cv::Point3d> getPointsToConnect();
 
-    bool displayImgProcessing;
 };
 
 

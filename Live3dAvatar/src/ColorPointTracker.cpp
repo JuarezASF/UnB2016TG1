@@ -25,7 +25,8 @@ void ColorPointTracker::update(std::vector<cv::Mat> &imgs) {
         for (int j = 0; j < targets.size(); j++) {
             auto point3d = targets[j]->getEstimatedCenter();
 
-            cv::circle(imgs[i],cv::Point(point3d.x, point3d.y) , 10, targets[j]->getHSVHigh(), -1 );
+            cv::circle(imgs[i], cv::Point(point3d.x, point3d.y), 10, targets[j]->getHSVHigh(), -1);
+            cv::circle(imgs[i], cv::Point(point3d.x, point3d.y), 10, cv::Scalar(255, 255, 179), 1);
         }
     }
 
