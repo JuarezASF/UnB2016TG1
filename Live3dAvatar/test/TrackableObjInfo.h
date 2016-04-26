@@ -23,5 +23,8 @@ public:
 
 };
 
+std::ostream & operator<<(std::ostream & STR, TrackableObjInfo const & v);
+std::ostream & operator<<(std::ostream & STR, std::set<std::string> const & v);
+
 
 #endif //STEP00_TRACKABLEOBJINFO_H

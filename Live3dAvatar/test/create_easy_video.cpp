@@ -20,12 +20,12 @@ int main(int argc, char **argv) {
     std::vector<std::string> names;
     std::vector<std::string> connectedTo;
 
-    int qtdPoints = 6;
+    int qtdPoints = 8;
     double r = 100;
 
     for (int i = 0; i < qtdPoints; i++) {
         points.push_back(cv::Point2d(240 + r * cos(2 * M_PI / qtdPoints * i), 320 + r * sin(2 * M_PI / qtdPoints * i)));
-        colors.push_back(cv::Vec3b((int) 255.0 / qtdPoints * i, 255, 170));
+        colors.push_back(cv::Vec3b((int) 10 + 150 / (qtdPoints-1) * i, 240, 240));
         offsets_x.push_back((i % 2 == 0) ? 30 : 0);
         names.push_back("center#" + std::to_string(i));
         connectedTo.push_back("center#" + std::to_string((i + 2) % qtdPoints));
@@ -47,8 +47,8 @@ int main(int argc, char **argv) {
     for (int i = 0; i < qtdPoints; i++) {
         fs << "{";
         fs << "name" << names[i];
-        fs << "low_hsv" << colors[i] - cv::Vec3b(5, 5, 5);
-        fs << "high_hsv" << colors[i] + cv::Vec3b(5, 5, 5);
+        fs << "low_hsv" << colors[i] - cv::Vec3b(10, 10, 5);
+        fs << "high_hsv" << colors[i] + cv::Vec3b(10, 10, 5);
         fs << "qtdConnections" << 2;
         fs << "connections" << "[" << connectedTo[2 * i] << connectedTo[2 * i + 1] << "]";
         fs << "}";

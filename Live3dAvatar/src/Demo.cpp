@@ -21,16 +21,12 @@ Demo::Demo(std::string filename, std::string yml_file)
 
     auto connection_map = util::parseConnectionYML(yml_file);
 
-    for (auto it = connection_map.begin(); it != connection_map.end(); it++) {
-        tracker.addHSVRangeToTrack(it->second.low_hsv, it->second.high_hsv, it->first);
-    }
-
 
     for (auto it = connection_map.begin(); it != connection_map.end(); it++) {
         tracker.addHSVRangeToTrack(it->second.low_hsv, it->second.high_hsv, it->first);
+        state.setPointRange(it->second.low_hsv, it->second.high_hsv, it->first);
         for (auto iit : it->second.connections)
             state.connect(it->first, iit);
-        state.setPointRange(it->second.low_hsv, it->second.high_hsv, it->first);
     }
 
 
@@ -88,9 +84,9 @@ void Demo::updateVisualizer() {
     std::unordered_map<std::string, cv::Point3d> centers = state.getCenters();
     for (auto it = centers.begin(); it != centers.end(); it++) {
         auto c = it->second;
-        cv::Vec3b color = util::convert(state.pointHyerarchyMap[it->first].high_hsv, cv::COLOR_HSV2BGR);
+        cv::Vec3b color = util::convert(state.pointHyerarchyMap[it->first].low_hsv, cv::COLOR_HSV2BGR);
 
-        viewer->addSphere(pcl::PointXYZ(c.x, c.y, c.z), 10, color[2], color[1], color[0], it->first);
+        viewer->addSphere(pcl::PointXYZ(c.x, c.y, c.z), 10, color[0]/255.0, color[1]/255.0, color[2]/255.0, it->first);
     }
 
 }

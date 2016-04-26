@@ -29,11 +29,12 @@ State::~State() {
 void State::update(float dt) {
     current_time += dt;
     std::vector<cv::Point3d> points = Demo::getPointsToConnect();
-    int c = 0;
     std::string c_name;
     for (int k = 0; k < points.size(); k++) {
-        c_name = nameOfCenter(c++);
-        centers[c_name] = points[k];
+        c_name = nameOfCenter(k);
+
+        cv::Point3_<double> &o = points[k];
+        centers[c_name] = cv::Point3d(-1*o.x, -1.0*o.y, -1.0*o.z);
     }
 
     fitCylindersToCenters();
