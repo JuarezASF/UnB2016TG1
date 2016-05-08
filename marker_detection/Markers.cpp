@@ -15,8 +15,10 @@ void Markers::createMarkers(int markersNum) // este método cria os marcadores, 
     Mat marker;
     String outName;
 
-    auto dictionary = aruco::getPredefinedDictionary(aruco::DICT_6X6_250);
-    // define as imagens como 6x6 (quadrados preto-branco e não pixels) usando um dicionário de 250 imagens
+    aruco::Dictionary dictionary;
+
+    dictionary = aruco::getPredefinedDictionary(aruco::DICT_6X6_250); // define as imagens como 6x6 (quadrados
+    // preto-branco e não pixels) usando um dicionário de 250 imagens
 
     for (int i = 1; i <= markersNum; ++i) {
 
