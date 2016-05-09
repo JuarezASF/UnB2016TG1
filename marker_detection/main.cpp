@@ -1,24 +1,39 @@
 #include <iostream>
+#include <cstdlib>
 #include <opencv2/opencv.hpp>
-#include <opencv2/aruco.hpp>
 #include "Camera.h"
-#include "Markers.h"
 
 using namespace cv;
 using namespace std;
 
-int main( int argc, char** argv )
-{
+int main(int argc, char **argv) {
+
+    string configFile = "";
+
+    if (const char *env_config_file = std::getenv("MARKER_CONFIG_FILE")) {
+        configFile = string(env_config_file);
+    }
+
+    if (configFile.empty()) {
+        configFile = "config.yml";
+    }
+
+    cout << "configuration being read from: " << configFile << endl;
+
+
+    FileStorage fs("config.yml", FileStorage::READ);
+    string videoFile1 = (string) fs["input01"];
+    string videoFile2 = (string) fs["input02"];
+    fs.release();
+
+    cout << "video 1 being read from: " << videoFile1 << endl;
+    cout << "video 2 being read from: " << videoFile2 << endl;
 
     Camera camera;
-
-
-//    camera.setTheCameras(2, 4);
-    camera.setTheCameras("/home/rodrigo/ClionProjects/record_videos/out1.avi", "/home/rodrigo/ClionProjects/record_videos/out2.avi", 3, 4); // este método aceita até 4 inteiros como entrada, ou duas strings. Eu fiz uma implementação que aceita a conexão de qualquer combinação de camera
-    // da minha plataforma já definindo as distancias focais e as baselines corretas automaticamente
+    camera.setTheCameras(videoFile1, videoFile2, 3, 4);
 
     camera.calibrateMarkers();
-    if(camera.endProgram)
+    if (camera.endProgram)
         return 0;
 
     camera.detectMarkers(); //detecta os marcadores em todas as cameras, os valores de X Y Z de cada marcador
