@@ -13,8 +13,9 @@ using namespace cv;
 class Camera {
 
 
-    int timerCalib = 2;
-    int numFramesCalib = 120;
+    int timerCalib = 5;
+    int numFramesCalib = 60;
+    int filesFramesToStart = 50;
 
     bool inputIsFile = false;
     int numberOfCameras;

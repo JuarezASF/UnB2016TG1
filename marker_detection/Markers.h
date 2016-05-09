@@ -16,11 +16,13 @@ class Markers {
     vector<int> markerIds; // vetor de Ids dos marcadores
     vector<vector<Point2f> > markerCorners, rejectedCandidates; // aqui estarão os pontos dos cantos de cada marcador
 
-    aruco::DetectorParameters parameters;
-    aruco::Dictionary dictionary = aruco::getPredefinedDictionary(aruco::DICT_6X6_250);
+    cv::Ptr<aruco::DetectorParameters> parameters;
+    cv::Ptr<aruco::Dictionary> dictionary = aruco::getPredefinedDictionary(aruco::DICT_6X6_250);
+    bool firstCalib = true;
 
 public:
 
+    vector<int> allIds;
     vector<int> leftArm;
     vector<int> rightArm;
     String markersDistribution;

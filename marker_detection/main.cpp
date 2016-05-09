@@ -13,8 +13,8 @@ int main( int argc, char** argv )
     Camera camera;
 
 
-
-    camera.setTheCameras(2, 4); // este método aceita até 4 inteiros como entrada, ou duas strings. Eu fiz uma implementação que aceita a conexão de qualquer combinação de camera
+//    camera.setTheCameras(2, 4);
+    camera.setTheCameras("/home/rodrigo/ClionProjects/record_videos/out1.avi", "/home/rodrigo/ClionProjects/record_videos/out2.avi", 3, 4); // este método aceita até 4 inteiros como entrada, ou duas strings. Eu fiz uma implementação que aceita a conexão de qualquer combinação de camera
     // da minha plataforma já definindo as distancias focais e as baselines corretas automaticamente
 
     camera.calibrateMarkers();

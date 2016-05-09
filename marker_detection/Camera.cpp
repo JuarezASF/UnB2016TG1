@@ -150,12 +150,26 @@ void Camera::calibrateMarkers()
 
         cout << "Go to position" << endl;
 
-        for(int j = timerCalib; j >= 0 ; j--) // timerCalib se refere a quantidade de segundos para
-            // a pessoar ir para posição de calibração
+        if(!inputIsFile)
         {
+            for(int j = timerCalib; j >= 0 ; j--) // timerCalib se refere a quantidade de segundos para
+                // a pessoar ir para posição de calibração
+            {
 
-            cout << "\rStarting calibration in " << j << "s" << flush;
-            sleep(1);
+                cout << "\rStarting calibration in " << j << "s" << flush;
+                sleep(1);
+            }
+        }
+
+        else
+        {
+            for(int j = 0; j < filesFramesToStart; j++)
+            {
+                for(unsigned i = 1; i <= numberOfCameras; i++) // um loop que passa por todas as cameras
+                {
+                    cap.at(i) >> frameOriginal;
+                }
+            }
         }
 
         cout << endl;
@@ -298,13 +312,15 @@ void Camera::detectMarkers()  // esta método chama a detecção de marcadores e
     
     Mat imgOriginal, imgDetection;
     double f1, f2, f3, f4, x1, x2, x3, x4, y1, y2, y3, y4, z1, z2, z3, z4, z5, z6, b;
-    int count;
+    int count, id;
+    int countFrame=0;
     
     if(numberOfCameras>1) // se tem mais de uma camera então a detecção de profundidade é possível, implementei isso
         // para caso precise testar cada camera individualmente em algum aspecto
     {
         while(true)
         {
+            countFrame++;
 
             for(unsigned i = 1; i <= numberOfCameras; i++) // um loop que passa por todas as cameras
             {
@@ -342,15 +358,16 @@ void Camera::detectMarkers()  // esta método chama a detecção de marcadores e
 
                     b = baseline*(cameraLabels.at(2) - cameraLabels.at(1));
 
-                    for(int i = 1; i <= markersCalib.markersAmount; i++)
+                    for(unsigned i = 0; i < markersCalib.allIds.size(); i++)
                     {
-                        x1 = markersArray.at(1).xCenter[i];
-                        x2 = markersArray.at(2).xCenter[i];
-                        markerZ[i] = -f1*f2*b/(x1*f2 - x2*f1);
+                        id = markersCalib.allIds.at(i);
+                        x1 = markersArray.at(1).xCenter[id];
+                        x2 = markersArray.at(2).xCenter[id];
+                        markerZ[id] = -f1*f2*b/(x1*f2 - x2*f1);
 
-                        markerX[i] = x1*markerZ[i]/f1;
-                        y1 = markersArray.at(1).yCenter[i];
-                        markerY[i] = y1*markerZ[i]/f1;
+                        markerX[id] = x1*markerZ[id]/f1;
+                        y1 = markersArray.at(1).yCenter[id];
+                        markerY[id] = y1*markerZ[id]/f1;
                     }
 
                     break;
@@ -359,11 +376,13 @@ void Camera::detectMarkers()  // esta método chama a detecção de marcadores e
                     f3 = focal.at((unsigned)cameraLabels.at(3));
 
 
-                    for(int i = 1; i <= markersCalib.markersAmount; i++)
+                    for(unsigned i = 0; i < markersCalib.allIds.size(); i++)
                     {
-                        x1 = markersArray.at(1).xCenter[i];
-                        x2 = markersArray.at(2).xCenter[i];
-                        x3 = markersArray.at(3).xCenter[i];
+                        id = markersCalib.allIds.at(i);
+                        
+                        x1 = markersArray.at(1).xCenter[id];
+                        x2 = markersArray.at(2).xCenter[id];
+                        x3 = markersArray.at(3).xCenter[id];
 
 
 
@@ -396,11 +415,11 @@ void Camera::detectMarkers()  // esta método chama a detecção de marcadores e
                             z3 = 0;
 
                         if(!count)
-                            markerZ[i] = -(z1+z2+z3)/count;
+                            markerZ[id] = -(z1+z2+z3)/count;
 
-                            markerX[i] = x1*markerZ[i]/f1;
-                            y1 = markersArray.at(1).yCenter[i];
-                            markerY[i] = y1*markerZ[i]/f1;
+                        markerX[id] = x1*markerZ[id]/f1;
+                        y1 = markersArray.at(1).yCenter[id];
+                        markerY[id] = y1*markerZ[id]/f1;
                     }
 
                     break;
@@ -409,12 +428,13 @@ void Camera::detectMarkers()  // esta método chama a detecção de marcadores e
                     f3 = focal.at((unsigned)cameraLabels.at(3));
                     f4 = focal.at((unsigned)cameraLabels.at(4));
 
-                    for(int i = 1; i <= markersCalib.markersAmount; i++)
+                    for(unsigned i = 0; i < markersCalib.allIds.size(); i++)
                     {
-                        x1 = markersArray.at(1).xCenter[i];
-                        x2 = markersArray.at(2).xCenter[i];
-                        x3 = markersArray.at(3).xCenter[i];
-                        x4 = markersArray.at(4).xCenter[i];
+                        id = markersCalib.allIds.at(i);
+                        x1 = markersArray.at(1).xCenter[id];
+                        x2 = markersArray.at(2).xCenter[id];
+                        x3 = markersArray.at(3).xCenter[id];
+                        x4 = markersArray.at(4).xCenter[id];
 
                         b = baseline*(cameraLabels.at(2) - cameraLabels.at(1));
                         if(true)
@@ -471,11 +491,11 @@ void Camera::detectMarkers()  // esta método chama a detecção de marcadores e
                             z6 = 0;
 
                         if(!count)
-                            markerZ[i] = -(z1+z2+z3+z4+z5+z6)/count;
+                            markerZ[id] = -(z1+z2+z3+z4+z5+z6)/count;
 
-                        markerX[i] = x1*markerZ[i]/f1;
-                        y1 = markersArray.at(1).yCenter[i];
-                        markerY[i] = y1*markerZ[i]/f1;
+                        markerX[id] = x1*markerZ[id]/f1;
+                        y1 = markersArray.at(1).yCenter[id];
+                        markerY[id] = y1*markerZ[id]/f1;
                     }
 
                     break;
@@ -483,8 +503,17 @@ void Camera::detectMarkers()  // esta método chama a detecção de marcadores e
                 default:
                     break;
             }
-//            cout << "left hand: X = " << markerX[markersCalib.leftArm.at(0)] << "\tY = " << markerY[markersCalib.leftArm.at(0)] <<
-//                    "\tZ = " << markerZ[markersCalib.leftArm.at(0)] << endl;
+
+//            if(countFrame%30 == 0)
+//            {
+//                cout << "left hand: X = " << markerX[markersCalib.leftArm.at(0)] << "\tY = " << markerY[markersCalib.leftArm.at(0)] <<
+//                "\tZ = " << markerZ[markersCalib.leftArm.at(0)] << endl;
+//                cout << "left elbow: X = " << markerX[markersCalib.leftArm.at(1)] << "\tY = " << markerY[markersCalib.leftArm.at(1)] <<
+//                "\tZ = " << markerZ[markersCalib.leftArm.at(1)] << endl;
+//                cout << "left shoulder: X = " << markerX[markersCalib.leftArm.at(2)] << "\tY = " << markerY[markersCalib.leftArm.at(2)] <<
+//                "\tZ = " << markerZ[markersCalib.leftArm.at(2)] << endl;
+//
+//            }
 
             if (waitKey(30) == 27) //wait for 'esc' key press for 30ms. If 'esc' key is pressed, break loop
             {
