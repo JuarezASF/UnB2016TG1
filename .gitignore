@@ -1,5 +1,6 @@
 # Compiled Object files
 .idea
+tex
 *.slo
 *.lo
 *.o

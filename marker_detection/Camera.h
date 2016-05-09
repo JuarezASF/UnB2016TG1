@@ -40,7 +40,13 @@ public:
     void setTheCameras(int, int);
     void setTheCameras(int, int, int);
     void setTheCameras(int, int, int, int);
+
+    /**
+     * este método aceita até 4 inteiros como entrada, ou duas strings. Eu fiz uma implementação que aceita a conexão de qualquer combinação de camera
+     * da minha plataforma já definindo as distancias focais e as baselines corretas automaticamente
+     */
     void setTheCameras(String, String, int, int);
+
     void calibrateMarkers();
     void detectMarkers();
 

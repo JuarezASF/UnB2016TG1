@@ -103,10 +103,6 @@ void Camera::setTheCameras(int num1, int num2, int num3, int num4) {
 
 }
 
-/**
- * este método aceita até 4 inteiros como entrada, ou duas strings. Eu fiz uma implementação que aceita a conexão de qualquer combinação de camera
- * da minha plataforma já definindo as distancias focais e as baselines corretas automaticamente
- */
 void Camera::setTheCameras(String firstVideo, String secondVideo, int num1, int num2) {
     VideoCapture capAux;
     Markers markerAux;
