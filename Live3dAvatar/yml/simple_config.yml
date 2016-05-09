@@ -1,0 +1,76 @@
+%YAML:1.0
+qtdObjects: 8
+objNames:
+   - "center#0"
+   - "center#1"
+   - "center#2"
+   - "center#3"
+   - "center#4"
+   - "center#5"
+   - "center#6"
+   - "center#7"
+objs:
+   -
+      name: "center#0"
+      low_hsv: [ 0, 230, 235 ]
+      high_hsv: [ 20, 250, 245 ]
+      qtdConnections: 2
+      connections:
+         - "center#2"
+         - "center#6"
+   -
+      name: "center#1"
+      low_hsv: [ 21, 230, 235 ]
+      high_hsv: [ 41, 250, 245 ]
+      qtdConnections: 2
+      connections:
+         - "center#3"
+         - "center#7"
+   -
+      name: "center#2"
+      low_hsv: [ 42, 230, 235 ]
+      high_hsv: [ 62, 250, 245 ]
+      qtdConnections: 2
+      connections:
+         - "center#4"
+         - "center#0"
+   -
+      name: "center#3"
+      low_hsv: [ 63, 230, 235 ]
+      high_hsv: [ 83, 250, 245 ]
+      qtdConnections: 2
+      connections:
+         - "center#5"
+         - "center#1"
+   -
+      name: "center#4"
+      low_hsv: [ 84, 230, 235 ]
+      high_hsv: [ 104, 250, 245 ]
+      qtdConnections: 2
+      connections:
+         - "center#6"
+         - "center#2"
+   -
+      name: "center#5"
+      low_hsv: [ 105, 230, 235 ]
+      high_hsv: [ 125, 250, 245 ]
+      qtdConnections: 2
+      connections:
+         - "center#7"
+         - "center#3"
+   -
+      name: "center#6"
+      low_hsv: [ 126, 230, 235 ]
+      high_hsv: [ 146, 250, 245 ]
+      qtdConnections: 2
+      connections:
+         - "center#0"
+         - "center#4"
+   -
+      name: "center#7"
+      low_hsv: [ 147, 230, 235 ]
+      high_hsv: [ 167, 250, 245 ]
+      qtdConnections: 2
+      connections:
+         - "center#1"
+         - "center#5"
