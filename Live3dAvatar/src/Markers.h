@@ -22,7 +22,6 @@ class Markers {
 
 public:
 
-
     vector<int> allIds;
     vector<int> leftArm;
     vector<int> rightArm;
@@ -31,6 +30,10 @@ public:
     map<int, bool> detectedId;
     map<int, double> xCenter, yCenter;
     void createMarkers(int);
+
+    /**
+     * find all IDs and relate them to body parts
+     */
     void findAllIds(Mat, Mat);
     void detect(Mat, Mat);
 };
