@@ -3,7 +3,6 @@
 //
 
 #include "Markers.h"
-#include <string>
 
 using namespace cv;
 using namespace std;
@@ -14,9 +13,9 @@ void Markers::createMarkers(int markersNum) // este método cria os marcadores, 
     Mat marker;
     String outName;
 
-    aruco::Dictionary dictionary = aruco::getPredefinedDictionary(
-            aruco::DICT_6X6_250); // define as imagens como 6x6 (quadrados
-    // preto-branco e não pixels) usando um dicionário de 250 imagens
+//    aruco::Dictionary dictionary = aruco::getPredefinedDictionary(
+//            aruco::DICT_6X6_250); // define as imagens como 6x6 (quadrados
+//    // preto-branco e não pixels) usando um dicionário de 250 imagens
 
     for (int i = 1; i <= markersNum; ++i) {
 
@@ -118,34 +117,28 @@ void Markers::findAllIds(Mat frameInput, Mat frameOutput) // encontra a quantida
 
 }
 
-void Markers::detect(Mat imgO, Mat imgD) // esta é a função de detecção dos marcadores, no caso ela recebe um frame de
-// uma camera e detecta todos os marcadores
-{
+vector<cv::Point2d> Markers::detect(Mat imgO, Mat imgD) {
+
+    vector<cv::Point2d> out;
 
     aruco::detectMarkers(imgO, dictionary, markerCorners, markerIds, parameters, rejectedCandidates);
 
     aruco::drawDetectedMarkers(imgD, markerCorners, markerIds);
 
 
-    double center;
+    double x, y;
 
     for (unsigned i = 0; i < markerIds.size(); i++) // neste loop é definido o x e y centrais pra cada marcador
     {
-
-        center = (markerCorners.at(i)[0].x + markerCorners.at(i)[1].x +
+        x = (markerCorners.at(i)[0].x + markerCorners.at(i)[1].x +
                   markerCorners.at(i)[2].x + markerCorners.at(i)[3].x) / 4;
-        xCenter[markerIds.at(i)] = center;
 
-        center = (markerCorners.at(i)[0].y + markerCorners.at(i)[1].y +
+        y = (markerCorners.at(i)[0].y + markerCorners.at(i)[1].y +
                   markerCorners.at(i)[2].y + markerCorners.at(i)[3].y) / 4;
-        yCenter[markerIds.at(i)] = center;
-    }
-//    for (int j = 0; j <; ++j) {
-//        if(xCenter.count())
-//            detectedId[] = true;
-//        else
-//            detectedId[] = false;
 
-//    }
+        out.push_back(cv::Point2d(x,y));
+    }
+
+    return out;
 
 }

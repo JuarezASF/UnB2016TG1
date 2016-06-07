@@ -20,6 +20,8 @@ public:
     void set_high(cv::Vec3b low);
     void add_connection(std::string o);
 
+    void printConnections() const;
+
 
 };
 

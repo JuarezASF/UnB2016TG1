@@ -4,15 +4,12 @@ project(step00)
 
 set(CMAKE_CXX_COMPILER g++)
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14")
 
-#FIND_PACKAGE(Boost REQUIRED)
-#INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIR})
+find_package(OpenCV REQUIRED)
 
 find_package(PCL 1.2 REQUIRED COMPONENTS common visualization)
 
-#find_package(OpenCV REQUIRED COMPONENTS opencv_core opencv_imgproc opencv_video opencv_videoio opencv_highgui)
-find_package(OpenCV REQUIRED)
 
 include_directories(${PCL_INCLUDE_DIRS})
 link_directories(${PCL_LIBRARY_DIRS})
@@ -22,4 +19,3 @@ include_directories(srx)
 
 add_subdirectory(src)
 add_subdirectory(test)
-

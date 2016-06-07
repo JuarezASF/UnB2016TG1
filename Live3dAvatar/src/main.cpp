@@ -6,15 +6,20 @@
 
 
 int main(int argc, char **argv) {
-    util::CommandLineParser parser;
-    parser.addStrArg("-f", true, "");
-    parser.addStrArg("--yml", false, "yml/simple_config.yml");
-    parser.addBoolArg("--view-3d", false, false);
-    parser.addBoolArg("--true-tracker", false, false);
+    std::string configFile = "";
 
-    parser.parseCommandLine(argc, argv);
+    if (const char *env_config_file = std::getenv("CONFIG_FILENAME")) {
+        configFile = std::string(env_config_file);
+    }
 
-    Demo::init(parser.getStrVal("-f"), parser.getStrVal("--yml"));
+    if (configFile.empty()) {
+        configFile = "config.yml";
+    }
+
+    cout << "configuration being read from: " << configFile << endl;
+
+
+    Demo::init(configFile);
     Demo *d = Demo::getInstance();
 
     d->run();

@@ -15,6 +15,7 @@
 
 #include "OutputWindow.h"
 #include "ColorPointTracker.h"
+#include "MOTemplateTracker.h"
 
 class Demo {
 
@@ -28,7 +29,8 @@ protected:
     void updateVisualizer();
 
     //opencv stuff
-    static ColorPointTracker tracker;
+//    static ColorPointTracker tracker;
+    static MOTemplateTracker tracker;
     bool quitRequested;
     static std::unordered_map<std::string, OutputWindow> window;
     std::vector<Camera*> videoInputArray;
@@ -38,16 +40,21 @@ protected:
 
     void setCamera(std::string file);
 
-    Demo(std::string filename, std::string yml_file);
+    Demo(std::string yml_file);
 
     static Demo *instance;
+
+    // camera parameters that will be read from file
+    int qtdCameras;
+    double baseline;
+    vector<double> focal;
 
 public:
 
 
     static Demo *getInstance();
 
-    static void init(std::string filename, std::string yml_file);
+    static void init(std::string yml_file);
 
     virtual ~Demo();
 
@@ -56,6 +63,8 @@ public:
     static OutputWindow &getOutput(std::string name);
 
     static std::vector<cv::Point3d> getPointsToConnect();
+
+    inline vector<double> getFs(){return focal;}
 
 };
 

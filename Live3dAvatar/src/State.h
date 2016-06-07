@@ -13,7 +13,7 @@
 #include <set>
 #include <string>
 #include <exception>
-#include "../test/TrackableObjInfo.h"
+#include "TrackableObjInfo.h"
 
 class State {
 protected:
@@ -53,6 +53,9 @@ public:
 
     void setPointRange(cv::Vec3b low, cv::Vec3b high, std::string name);
     std::unordered_map<std::string , TrackableObjInfo> pointHyerarchyMap;
+
+
+    void printHyerarchyMap();
 
 };
 

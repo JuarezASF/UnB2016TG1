@@ -9,7 +9,7 @@
 #include <vector>
 #include <set>
 #include <unordered_map>
-#include "../test/TrackableObjInfo.h"
+#include "TrackableObjInfo.h"
 
 class util {
 

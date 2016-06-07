@@ -2,14 +2,17 @@
 // Created by jasf on 4/4/16.
 //
 
+#include <string>
 #include "Demo.h"
 #include "Logger.h"
 #include "util.h"
+#include "Markers.h"
+#include "MultipleViewMerger.h"
 
-ColorPointTracker Demo::tracker;
+MOTemplateTracker Demo::tracker;
 std::unordered_map<std::string, OutputWindow> Demo::window;
 
-Demo::Demo(std::string filename, std::string yml_file)
+Demo::Demo(std::string yml_file)
         : state(), quitRequested(false) {
 
     viewer = new pcl::visualization::PCLVisualizer("Live 3d Avatar Visualizer");
@@ -17,18 +20,52 @@ Demo::Demo(std::string filename, std::string yml_file)
     viewer->addCoordinateSystem(10.0);
     viewer->initCameraParameters();
 
-    setCamera(filename);
+    std::cout << yml_file << endl;
+
+    cv::FileStorage fs(yml_file, cv::FileStorage::READ);
+
+    if (!fs.isOpened()) {
+        std::cerr << "cannot open config file named " << yml_file << endl;
+        exit(0);
+    }
+
+    qtdCameras = (int) fs["qtdInput"];
+
+    for (int k = 0; k < qtdCameras; k++) {
+
+        std::stringstream argnameBuilder;
+
+        argnameBuilder << "input" << std::setfill('0') << std::setw(2) << k;
+
+        std::string argname = argnameBuilder.str();
+
+        std::string cameraFilename = (std::string) fs[argname];
+
+        setCamera(cameraFilename);
+
+        std::string fArgName = "f" + std::to_string(k);
+
+        focal.push_back((double) fs[fArgName]);
+
+    }
+
+    baseline = (double) fs["baseline"];
+
+    //skip a few frames
+    for (int k = 0; k < 30; k++)
+        updateCameraStates();
 
     auto connection_map = util::parseConnectionYML(yml_file);
 
-
     for (auto it = connection_map.begin(); it != connection_map.end(); it++) {
-        tracker.addHSVRangeToTrack(it->second.low_hsv, it->second.high_hsv, it->first);
-        state.setPointRange(it->second.low_hsv, it->second.high_hsv, it->first);
         for (auto iit : it->second.connections)
             state.connect(it->first, iit);
     }
 
+    cout << "Hyerarchy map build" << endl;
+    state.printHyerarchyMap();
+
+    MultipleViewMerger::setBaseline(baseline);
 
 }
 
@@ -46,11 +83,8 @@ void Demo::run() {
 
         updateCameraStates();
         tracker.update(frameCollection);
-        if (true) {
-            for (int k = 0; k < frameCollection.size(); k++) {
-                cv::imshow("input " + std::to_string(k), frameCollection[k]);
-            }
-
+        for (int k = 0; k < frameCollection.size(); k++) {
+            cv::imshow("input " + std::to_string(k), frameCollection[k]);
         }
 
 
@@ -61,7 +95,7 @@ void Demo::run() {
 
 
         //check for opencv input
-        c = cv::waitKey(30);
+        c = cv::waitKey(5);
         if (c == 'q' || c == 27) {
             Logger::log("esc key is pressed by user");
             quitRequested = true;
@@ -86,7 +120,8 @@ void Demo::updateVisualizer() {
         auto c = it->second;
         cv::Vec3b color = util::convert(state.pointHyerarchyMap[it->first].low_hsv, cv::COLOR_HSV2BGR);
 
-        viewer->addSphere(pcl::PointXYZ(c.x, c.y, c.z), 10, color[0]/255.0, color[1]/255.0, color[2]/255.0, it->first);
+        viewer->addSphere(pcl::PointXYZ(c.x, c.y, c.z), 10, color[0] / 255.0, color[1] / 255.0, color[2] / 255.0,
+                          it->first);
     }
 
 }
@@ -135,7 +170,7 @@ Demo *Demo::getInstance() {
     return instance;
 }
 
-void Demo::init(std::string filename, std::string yml_file) {
-    instance = new Demo(filename, yml_file);
+void Demo::init(std::string yml_file) {
+    instance = new Demo(yml_file);
 
 }

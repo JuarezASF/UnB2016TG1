@@ -122,3 +122,12 @@ void State::setPointRange(cv::Vec3b low, cv::Vec3b high, std::string name) {
 
 
 }
+
+void State::printHyerarchyMap() {
+
+    for(const auto &it : pointHyerarchyMap){
+        cout << it.first << endl;
+        it.second.printConnections();
+    }
+
+}

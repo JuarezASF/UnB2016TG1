@@ -62,3 +62,11 @@ void MVMOTemplateTracker::calibrateMarkers(std::vector<cv::VideoCapture> cap, in
     }
 
 }
+
+void MVMOTemplateTracker::update(const std::vector<cv::Mat> &imgs) {
+
+}
+
+std::vector<cv::Point3d> MVMOTemplateTracker::getCenters() const {
+    return std::vector<cv::Point3d>();
+}

@@ -465,16 +465,16 @@ void Camera::detectMarkers()  // esta método chama a detecção de marcadores e
                     break;
             }
 
-//            if(countFrame%30 == 0)
-//            {
-//                cout << "left hand: X = " << markerX[markersCalib.leftArm.at(0)] << "\tY = " << markerY[markersCalib.leftArm.at(0)] <<
-//                "\tZ = " << markerZ[markersCalib.leftArm.at(0)] << endl;
-//                cout << "left elbow: X = " << markerX[markersCalib.leftArm.at(1)] << "\tY = " << markerY[markersCalib.leftArm.at(1)] <<
-//                "\tZ = " << markerZ[markersCalib.leftArm.at(1)] << endl;
-//                cout << "left shoulder: X = " << markerX[markersCalib.leftArm.at(2)] << "\tY = " << markerY[markersCalib.leftArm.at(2)] <<
-//                "\tZ = " << markerZ[markersCalib.leftArm.at(2)] << endl;
-//
-//            }
+            if(countFrame%30 == 0)
+            {
+                cout << "left hand: X = " << markerX[markersCalib.leftArm.at(0)] << "\tY = " << markerY[markersCalib.leftArm.at(0)] <<
+                "\tZ = " << markerZ[markersCalib.leftArm.at(0)] << endl;
+                cout << "left elbow: X = " << markerX[markersCalib.leftArm.at(1)] << "\tY = " << markerY[markersCalib.leftArm.at(1)] <<
+                "\tZ = " << markerZ[markersCalib.leftArm.at(1)] << endl;
+                cout << "left shoulder: X = " << markerX[markersCalib.leftArm.at(2)] << "\tY = " << markerY[markersCalib.leftArm.at(2)] <<
+                "\tZ = " << markerZ[markersCalib.leftArm.at(2)] << endl;
+
+            }
 
             if (waitKey(30) == 27) //wait for 'esc' key press for 30ms. If 'esc' key is pressed, break loop
             {

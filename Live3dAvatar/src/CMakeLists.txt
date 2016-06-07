@@ -1,9 +1,4 @@
+add_executable(Live3dAvatar main.cpp State.cpp Demo.cpp RangeMultipleViewTracker.cpp Camera.cpp CommandLineParser.cpp Logger.cpp MultipleViewPointTracker.cpp ColorPointTracker.cpp OutputWindow.cpp util.cpp MVMOTracker.cpp MVMOTemplateTracker.cpp Markers.cpp TrackableObjInfo.cpp MOTemplateTracker.cpp MultipleViewMerger.cpp MultipleViewMerger.h)
+target_link_libraries(Live3dAvatar ${OpenCV_LIBS} ${PCL_LIBRARIES} )
 
-
-
-add_executable(Live3dAvatar main.cpp State.cpp State.h Demo.cpp Demo.h RangeMultipleViewTracker.cpp RangeMultipleViewTracker.h Camera.cpp Camera.h CommandLineParser.cpp CommandLineParser.h Logger.h Logger.cpp MultipleViewPointTracker.cpp MultipleViewPointTracker.h ColorPointTracker.cpp ColorPointTracker.h OutputWindow.cpp OutputWindow.h util.cpp util.h ../test/TrackableObjInfo.cpp ../test/TrackableObjInfo.h MVMOTracker.cpp MVMOTracker.h MVMOTemplateTracker.cpp MVMOTemplateTracker.h)
-target_link_libraries(Live3dAvatar ${PCL_LIBRARIES} ${OpenCV_LIBS})
-
-add_library(MultipleViewPointTracker MultipleViewPointTracker.cpp MultipleViewPointTracker.h RangeMultipleViewTracker.h RangeMultipleViewTracker.cpp)
 add_library(Camera Camera.h Camera.cpp)
-

@@ -32,3 +32,12 @@ std::ostream &operator<<(std::ostream &STR, std::set<std::string> const &v) {
         STR << it << ' ';
     return STR;
 }
+
+void TrackableObjInfo::printConnections() const {
+
+    for (const auto &it : connections){
+        std::cout << "\t\t" << it << std::endl;
+
+    }
+
+}

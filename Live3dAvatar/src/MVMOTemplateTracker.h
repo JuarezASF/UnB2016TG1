@@ -8,8 +8,9 @@
 #include <opencv2/opencv.hpp>
 #include <vector>
 #include "Markers.h"
+#include "MVMOTracker.h"
 
-class MVMOTemplateTracker : public MVMOTemplateTracker{
+class MVMOTemplateTracker : public MVMOTracker{
 
     bool quitRequested;
 

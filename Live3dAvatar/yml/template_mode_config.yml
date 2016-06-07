@@ -1,0 +1,33 @@
+%YAML:1.0
+qtdInput : 2
+input00 : avi/in1.avi
+input01 : avi/in2.avi
+f1: 839.7957543125267
+f2: 856.2034875162501
+f3: 835.1084859189979
+f4: 840.6286190371578
+baseline: 18.0
+
+qtdObjects: 8
+objNames:
+   - "center#0"
+   - "center#1"
+   - "center#2"
+
+objs:
+   -
+      name: "center#0"
+      qtdConnections: 1
+      connections:
+         - "center#1"
+   -
+      name: "center#1"
+      qtdConnections: 2
+      connections:
+         - "center#0"
+         - "center#2"
+   -
+      name: "center#2"
+      qtdConnections: 1
+      connections:
+         - "center#1"
