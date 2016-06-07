@@ -120,7 +120,7 @@ void Demo::updateVisualizer() {
         auto c = it->second;
         cv::Vec3b color = util::convert(state.pointHyerarchyMap[it->first].low_hsv, cv::COLOR_HSV2BGR);
 
-        viewer->addSphere(pcl::PointXYZ(c.x, c.y, c.z), 10, color[0] / 255.0, color[1] / 255.0, color[2] / 255.0,
+        viewer->addSphere(pcl::PointXYZ(c.x, c.y, c.z), 10, 255.0 / 255.0, 0 / 255.0, 0 / 255.0,
                           it->first);
     }
 
