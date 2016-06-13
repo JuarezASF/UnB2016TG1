@@ -1,7 +1,4 @@
 %YAML:1.0
-qtdInput : 2
-input01 : avi/in1.avi
-input02 : avi/in2.avi
 qtdObjects: 8
 objNames:
    - "center#0"

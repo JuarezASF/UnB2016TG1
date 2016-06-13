@@ -51,11 +51,13 @@ public:
 
     void connect(std::string A, std::string B);
 
-    void setPointRange(cv::Vec3b low, cv::Vec3b high, std::string name);
     std::unordered_map<std::string , TrackableObjInfo> pointHyerarchyMap;
+
+    void setHyerarhcyMap(std::unordered_map<std::string, TrackableObjInfo> map);
 
 
     void printHyerarchyMap();
+
 
 };
 

@@ -29,7 +29,7 @@ void MOTemplateTracker::update(const std::vector<cv::Mat> &imgs) {
 
 }
 
-std::vector<cv::Point3d> MOTemplateTracker::getCenters() const {
+std::map<int, cv::Point3d> MOTemplateTracker::getCenters() const {
     std::vector<cv::Point3d> out;
 
 //    for (int i = 0; i < centers.size(); i++){
@@ -39,5 +39,5 @@ std::vector<cv::Point3d> MOTemplateTracker::getCenters() const {
 //        }
 //    }
 
-    return MultipleViewMerger::mergeViews(centers, Demo::getInstance()->getFs());
+    return MultipleViewMerger::mergeViews(centers, Demo::getInstance()->getFs(), Demo::getInstance()->getQtdObjectsBeingTracked());
 }

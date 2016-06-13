@@ -8,22 +8,16 @@ TrackableObjInfo::TrackableObjInfo() {
 
 }
 
-void TrackableObjInfo::set_low(cv::Vec3b low) {
-    low_hsv = low;
-
+TrackableObjInfo::TrackableObjInfo(cv::Vec3b color, int id) : colorToPaintObject(color), markerId(id) {
 }
 
-void TrackableObjInfo::set_high(cv::Vec3b low) {
-    high_hsv = low;
-
-}
 
 void TrackableObjInfo::add_connection(std::string o) {
     connections.insert(o);
 }
 
 std::ostream &operator<<(std::ostream &STR, TrackableObjInfo const &v) {
-    STR << "[(" << v.low_hsv << "),(" << v.high_hsv << ")] connections" << v.connections;
+    STR << "[markerId:" << v.markerId << "] connections" << v.connections;
     return STR;
 }
 
@@ -35,9 +29,19 @@ std::ostream &operator<<(std::ostream &STR, std::set<std::string> const &v) {
 
 void TrackableObjInfo::printConnections() const {
 
-    for (const auto &it : connections){
+    for (const auto &it : connections) {
         std::cout << "\t\t" << it << std::endl;
 
     }
 
+}
+
+TrackableObjInfo &TrackableObjInfo::operator=(TrackableObjInfo A) {
+    this->colorToPaintObject = A.colorToPaintObject;
+
+    this->connections.clear();
+    for (auto it : A.connections)
+        this->connections.insert(it);
+
+    this->markerId = A.markerId;
 }

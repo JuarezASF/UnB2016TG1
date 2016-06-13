@@ -32,7 +32,9 @@ public:
     map<int, double> xCenter, yCenter;
     void createMarkers(int);
     void findAllIds(Mat, Mat);
-    vector<cv::Point2d> detect(Mat, Mat);
+    map<int, cv::Point2d> detect(Mat, Mat);
+
+    vector<int> getMarkersIds();
 };
 
 

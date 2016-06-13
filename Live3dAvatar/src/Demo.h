@@ -33,7 +33,7 @@ protected:
     static MOTemplateTracker tracker;
     bool quitRequested;
     static std::unordered_map<std::string, OutputWindow> window;
-    std::vector<Camera*> videoInputArray;
+    std::vector<Camera *> videoInputArray;
     std::vector<cv::Mat> frameCollection;
 
     void updateCameraStates();
@@ -47,6 +47,7 @@ protected:
     // camera parameters that will be read from file
     int qtdCameras;
     double baseline;
+    int qtdObjectsBeingTracker;
     vector<double> focal;
 
 public:
@@ -62,9 +63,11 @@ public:
 
     static OutputWindow &getOutput(std::string name);
 
-    static std::vector<cv::Point3d> getPointsToConnect();
+    static std::map<int, cv::Point3d> getPointsToConnect();
 
-    inline vector<double> getFs(){return focal;}
+    inline vector<double> getFs() { return focal; }
+
+    inline int getQtdObjectsBeingTracked() { return qtdObjectsBeingTracker; }
 
 };
 

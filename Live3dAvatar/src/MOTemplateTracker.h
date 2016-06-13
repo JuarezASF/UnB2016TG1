@@ -19,17 +19,17 @@ class MOTemplateTracker {
 
     Markers markers;
 
-    std::vector<std::vector<cv::Point2d>> centers;
+    std::vector<std::map<int, cv::Point2d>> centers;
 
 public:
 
     MOTemplateTracker();
 
     //update objects detection based on each received image
-    void update(const std::vector <cv::Mat> &imgs);
+    void update(const std::vector<cv::Mat> &imgs);
 
     //return center of object on each view
-    virtual std::vector <cv::Point3d> getCenters() const;
+    virtual std::map<int, cv::Point3d> getCenters() const;
 
 
 };

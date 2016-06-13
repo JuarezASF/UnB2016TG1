@@ -9,6 +9,7 @@
 #include <vector>
 #include <string>
 #include <iostream>
+#include <map>
 
 
 class MultipleViewMerger {
@@ -24,8 +25,8 @@ public:
      *
      * output: out[j] is point 3d j
      */
-    static std::vector<cv::Point3d> mergeViews(std::vector<std::vector<cv::Point2d>> pointsPerView,
-                                        std::vector<double> f);
+    static std::map<int, cv::Point3d> mergeViews(
+        std::vector<std::map<int, cv::Point2d>> pointsPerView, std::vector<double> f, int qtdPointsExpected);
 
     /**
      * distance from camera i to camera j is assumed to be:

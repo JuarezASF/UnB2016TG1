@@ -117,9 +117,9 @@ void Markers::findAllIds(Mat frameInput, Mat frameOutput) // encontra a quantida
 
 }
 
-vector<cv::Point2d> Markers::detect(Mat imgO, Mat imgD) {
+map<int, cv::Point2d> Markers::detect(Mat imgO, Mat imgD) {
 
-    vector<cv::Point2d> out;
+    map<int, cv::Point2d> out;
 
     aruco::detectMarkers(imgO, dictionary, markerCorners, markerIds, parameters, rejectedCandidates);
 
@@ -128,17 +128,25 @@ vector<cv::Point2d> Markers::detect(Mat imgO, Mat imgD) {
 
     double x, y;
 
-    for (unsigned i = 0; i < markerIds.size(); i++) // neste loop é definido o x e y centrais pra cada marcador
+    //for each marker, find its center as the averages of its corners
+    for (unsigned i = 0; i < markerIds.size(); i++)
     {
+
+        int id = markerIds[i];
         x = (markerCorners.at(i)[0].x + markerCorners.at(i)[1].x +
                   markerCorners.at(i)[2].x + markerCorners.at(i)[3].x) / 4;
 
         y = (markerCorners.at(i)[0].y + markerCorners.at(i)[1].y +
                   markerCorners.at(i)[2].y + markerCorners.at(i)[3].y) / 4;
 
-        out.push_back(cv::Point2d(x,y));
+        //set the corresponding position
+        out[id] = cv::Point2d(x,y);
     }
 
     return out;
 
+}
+
+vector<int> Markers::getMarkersIds() {
+    return markerIds;
 }

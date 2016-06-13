@@ -48,11 +48,11 @@ std::unordered_map<std::string, TrackableObjInfo> util::parseConnectionYML(std::
     cv::FileNode objs = fs["objs"];
     for (cv::FileNodeIterator it = objs.begin(); it != objs.end(); it++) {
         std::string name = ((std::string) ((*it)[cv::String("name")]));
-        cv::Vec3b low_hsv = util::readVec3b((*it)[cv::String("low_hsv")]);
-        cv::Vec3b high_hsv = util::readVec3b((*it)[cv::String("high_hsv")]);
+        cv::Vec3b color = util::readVec3b((*it)[cv::String("color")]);
+        int markerId = (int) (*it)[cv::String("markerid")];
 
-        out[name].set_low(low_hsv);
-        out[name].set_high(high_hsv);
+        out[name].setColorToPaint(color);
+        out[name].setMarkerId(markerId);
 
         int qtdConnections = (int) (*it)["qtdConnections"];
         cv::FileNode fnn = (*it)["connections"];

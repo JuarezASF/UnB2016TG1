@@ -6,7 +6,6 @@
 #include "Demo.h"
 #include "Logger.h"
 #include "util.h"
-#include "Markers.h"
 #include "MultipleViewMerger.h"
 
 MOTemplateTracker Demo::tracker;
@@ -50,17 +49,14 @@ Demo::Demo(std::string yml_file)
     }
 
     baseline = (double) fs["baseline"];
+    qtdObjectsBeingTracker = (int) fs["qtdObjects"];
 
     //skip a few frames
     for (int k = 0; k < 30; k++)
         updateCameraStates();
 
-    auto connection_map = util::parseConnectionYML(yml_file);
-
-    for (auto it = connection_map.begin(); it != connection_map.end(); it++) {
-        for (auto iit : it->second.connections)
-            state.connect(it->first, iit);
-    }
+    std::unordered_map<std::string, TrackableObjInfo> connection_map = util::parseConnectionYML(yml_file);
+    state.setHyerarhcyMap(connection_map);
 
     cout << "Hyerarchy map build" << endl;
     state.printHyerarchyMap();
@@ -118,9 +114,9 @@ void Demo::updateVisualizer() {
     std::unordered_map<std::string, cv::Point3d> centers = state.getCenters();
     for (auto it = centers.begin(); it != centers.end(); it++) {
         auto c = it->second;
-        cv::Vec3b color = util::convert(state.pointHyerarchyMap[it->first].low_hsv, cv::COLOR_HSV2BGR);
+        cv::Vec3b color = ((TrackableObjInfo) state.pointHyerarchyMap[it->first]).colorToPaintObject;
 
-        viewer->addSphere(pcl::PointXYZ(c.x, c.y, c.z), 10, 255.0 / 255.0, 0 / 255.0, 0 / 255.0,
+        viewer->addSphere(pcl::PointXYZ(c.x, c.y, c.z), 10, color[0] / 255.0, color[1] / 255.0, color[2] / 255.0,
                           it->first);
     }
 
@@ -159,7 +155,7 @@ void Demo::updateCameraStates() {
 }
 
 
-std::vector<cv::Point3d> Demo::getPointsToConnect() {
+std::map<int, cv::Point3d> Demo::getPointsToConnect() {
     return tracker.getCenters();
 }
 
