@@ -1,0 +1,183 @@
+%YAML:1.0
+qtd: 6
+objs:
+   -
+      name: obj0
+      connectedTo:
+         - obj2
+         - obj4
+   -
+      name: obj0
+      connectedTo:
+         - obj2
+         - obj4
+   -
+      name: obj0
+      connectedTo:
+         - obj2
+         - obj4
+   -
+      name: obj0
+      connectedTo:
+         - obj2
+         - obj4
+   -
+      name: obj0
+      connectedTo:
+         - obj2
+         - obj4
+   -
+      name: obj0
+      connectedTo:
+         - obj2
+         - obj4
+   -
+      name: obj1
+      connectedTo:
+         - obj3
+         - obj5
+   -
+      name: obj1
+      connectedTo:
+         - obj3
+         - obj5
+   -
+      name: obj1
+      connectedTo:
+         - obj3
+         - obj5
+   -
+      name: obj1
+      connectedTo:
+         - obj3
+         - obj5
+   -
+      name: obj1
+      connectedTo:
+         - obj3
+         - obj5
+   -
+      name: obj1
+      connectedTo:
+         - obj3
+         - obj5
+   -
+      name: obj2
+      connectedTo:
+         - obj0
+         - obj4
+   -
+      name: obj2
+      connectedTo:
+         - obj0
+         - obj4
+   -
+      name: obj2
+      connectedTo:
+         - obj0
+         - obj4
+   -
+      name: obj2
+      connectedTo:
+         - obj0
+         - obj4
+   -
+      name: obj2
+      connectedTo:
+         - obj0
+         - obj4
+   -
+      name: obj2
+      connectedTo:
+         - obj0
+         - obj4
+   -
+      name: obj3
+      connectedTo:
+         - obj1
+         - obj5
+   -
+      name: obj3
+      connectedTo:
+         - obj1
+         - obj5
+   -
+      name: obj3
+      connectedTo:
+         - obj1
+         - obj5
+   -
+      name: obj3
+      connectedTo:
+         - obj1
+         - obj5
+   -
+      name: obj3
+      connectedTo:
+         - obj1
+         - obj5
+   -
+      name: obj3
+      connectedTo:
+         - obj1
+         - obj5
+   -
+      name: obj4
+      connectedTo:
+         - obj0
+         - obj2
+   -
+      name: obj4
+      connectedTo:
+         - obj0
+         - obj2
+   -
+      name: obj4
+      connectedTo:
+         - obj0
+         - obj2
+   -
+      name: obj4
+      connectedTo:
+         - obj0
+         - obj2
+   -
+      name: obj4
+      connectedTo:
+         - obj0
+         - obj2
+   -
+      name: obj4
+      connectedTo:
+         - obj0
+         - obj2
+   -
+      name: obj5
+      connectedTo:
+         - obj1
+         - obj3
+   -
+      name: obj5
+      connectedTo:
+         - obj1
+         - obj3
+   -
+      name: obj5
+      connectedTo:
+         - obj1
+         - obj3
+   -
+      name: obj5
+      connectedTo:
+         - obj1
+         - obj3
+   -
+      name: obj5
+      connectedTo:
+         - obj1
+         - obj3
+   -
+      name: obj5
+      connectedTo:
+         - obj1
+         - obj3

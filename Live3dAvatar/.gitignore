@@ -1,0 +1,9 @@
+build
+.idea
+.idea/*
+*.zip
+video_markers/
+*.zip
+gnuplot_example/
+
+
