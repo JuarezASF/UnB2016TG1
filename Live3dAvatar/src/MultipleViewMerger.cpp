@@ -45,6 +45,12 @@ std::map<int, cv::Point3d> MultipleViewMerger::mergeViews(
     double b;
     double x_view, x_other, y1, y2, z, x, y;
 
+    for(std::set<int>::iterator it = idsOnCameras.begin(); it != idsOnCameras.end(); it++ ){}
+    for(int it : idsOnCameras){}
+    for(auto it : idsOnCameras){}
+
+
+
     for (int markerId : idsOnCameras) {
         cv::Vec3d vecSum(0.0, 0.0, 0.0);
         int qtdTimesSummed = 0;

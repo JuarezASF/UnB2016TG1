@@ -1,11 +1,11 @@
 %YAML:1.0
 qtdInput : 2
-input00 : avi/in00.avi
-input01 : avi/in01.avi
-f0: 835.1084859189979
-f1: 840.6286190371578
-f2: 839.7957543125267
-f3: 856.2034875162501
+input00 : videos_markers/video2/in02.avi
+input01 : videos_markers/video2/in03.avi
+f0: 856.2034875162501
+f1: 835.1084859189979
+f2: 840.6286190371578
+f3: 839.7957543125267
 
 baseline: 18.0
 
@@ -18,14 +18,14 @@ objNames:
 objs:
    -
       name: "center#0"
-      markerid: 3
+      markerid: 16
       color: [255, 0, 0]
       qtdConnections: 1
       connections:
          - "center#1"
    -
       name: "center#1"
-      markerid: 4
+      markerid: 15
       color: [0, 255, 0]
       qtdConnections: 2
       connections:
@@ -33,7 +33,7 @@ objs:
          - "center#2"
    -
       name: "center#2"
-      markerid: 5
+      markerid: 18
       color: [0, 0, 255]
       qtdConnections: 1
       connections:

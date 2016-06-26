@@ -17,7 +17,8 @@ class Markers {
     vector<vector<Point2f> > markerCorners, rejectedCandidates; // aqui estarão os pontos dos cantos de cada marcador
 
     aruco::DetectorParameters parameters;
-    aruco::Dictionary dictionary = aruco::getPredefinedDictionary(aruco::DICT_6X6_250);
+//    aruco::Dictionary dictionary = aruco::getPredefinedDictionary(aruco::DICT_6X6_250);
+    aruco::Dictionary dictionary = aruco::getPredefinedDictionary(aruco::DICT_5X5_50);
     bool firstCalib = true;
 
 public:
