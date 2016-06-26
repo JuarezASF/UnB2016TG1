@@ -28,3 +28,9 @@ tex
 *.exe
 *.out
 *.app
+
+Live3dAvatar/*.zip
+Live3dAvatar/video_markers/*/*.vi
+Live3dAvatar/video_markers/
+*.zip
+gnuplot_example
